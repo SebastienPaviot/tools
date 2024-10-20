@@ -14,7 +14,7 @@ console.log = function(...args) {
   originalConsole(errorMessage);
   
   // Envoyer l'erreur en POST à 'test.com'
-  fetch('/scfsn/log.php', {
+  fetch('log.php', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ console.error = function(...args) {
   originalConsoleError(errorMessage);
   
   // Envoyer l'erreur en POST à 'test.com'
-  fetch('/scfsn/log.php', {
+  fetch('log.php', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
