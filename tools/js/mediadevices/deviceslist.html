@@ -79,7 +79,7 @@
         
         // Stop the stream to free the device
         stream.getTracks().forEach(track => track.stop());
-        alert("steam close for device "+device.deviceId);
+        //alert("steam close for device "+device.deviceId);
 
         return false; // The device is available
       } catch (err) {
