@@ -47,7 +47,7 @@
 
         devices.forEach(async (device) => {
 
-          if (device.kind=="videoinput") {
+          //if (device.kind=="videoinput") {
             const li = document.createElement('li');
           li.textContent = `${device.kind}: ${device.label || 'No label'} (deviceId: ${device.deviceId}, groupId: ${device.groupId})`;
 
@@ -58,7 +58,7 @@
 
           deviceList.appendChild(li);
 
-          }
+         // }
           
         });
       } catch (err) {
