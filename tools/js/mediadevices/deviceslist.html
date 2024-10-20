@@ -28,7 +28,7 @@
   </style>
 </head>
 <body>
-  <h1>Available Devices List</h1>
+  <h1>Available Devices List v1.01</h1>
   <ul id="deviceList"></ul>
   <div id="statusMessage"></div>
 
@@ -74,6 +74,7 @@
         
         // Stop the stream to free the device
         stream.getTracks().forEach(track => track.stop());
+        alert("steam close for device "+device.deviceId);
 
         return false; // The device is available
       } catch (err) {
