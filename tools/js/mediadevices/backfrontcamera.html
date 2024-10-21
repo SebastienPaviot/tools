@@ -53,6 +53,7 @@
                 }
                 streamBack = await navigator.mediaDevices.getUserMedia(constraintsBack);
                 videoElementBack.srcObject = streamBack;
+                alert(streamBack.getVideoTracks().length);
             } catch (err) {
                 console.error('Error accessing the camera: ', err);
                 alert(err);
