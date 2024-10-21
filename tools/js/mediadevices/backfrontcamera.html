@@ -19,13 +19,7 @@
 <body>
     <h1>Select Camera and Stream Video</h1>
 
-    <div>
-        <label for="cameraSelect">Choose camera:</label>
-        <select id="cameraSelect">
-            <option value="user">Front Camera (User)</option>
-            <option value="environment">Rear Camera (Environment)</option>
-        </select>
-    </div>
+    
 
     <div id="controls">
         <button id="playButton">Play</button>
@@ -40,12 +34,30 @@
         const videoElementBack = document.getElementById('videoback');
         const playButton = document.getElementById('playButton');
         const stopButton = document.getElementById('stopButton');
-        const cameraSelect = document.getElementById('cameraSelect');
+       
         let streamFront,streamBack;
 
         // Function to start the video stream
         async function startStream() {
             //const selectedCamera = cameraSelect.value;
+           
+            const constraintsBack = {
+                video: {
+                    facingMode: "environment"  // 'user' or 'environment'
+                }
+            };
+            try {
+                // Stop any existing stream before starting a new one
+                if (streamBack) {
+                    streamBack.getTracks().forEach(track => track.stop());
+                }
+                streamBack = await navigator.mediaDevices.getUserMedia(constraintsBack);
+                videoElementBack.srcObject = streamBack;
+            } catch (err) {
+                console.error('Error accessing the camera: ', err);
+                alert(err);
+            }
+
             const constraintsFront = {
                 video: {
                     facingMode: "user"  // 'user' or 'environment'
@@ -63,22 +75,6 @@
                 alert(err);
             }
 
-            const constraintsBack = {
-                video: {
-                    facingMode: "environment"  // 'user' or 'environment'
-                }
-            };
-            try {
-                // Stop any existing stream before starting a new one
-                if (streamBack) {
-                    streamBack.getTracks().forEach(track => track.stop());
-                }
-                streamBack = await navigator.mediaDevices.getUserMedia(constraintsBack);
-                videoElementBack.srcObject = streamBack;
-            } catch (err) {
-                console.error('Error accessing the camera: ', err);
-                alert(err);
-            }
         }
 
         // Stop the video stream
