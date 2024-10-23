@@ -45,6 +45,7 @@
             ctx.drawImage(video, 0, 0);
             if (predictions.length > 0) {
         predictions.forEach(prediction => {
+            console.log(prediction);
             if (prediction.topLeft && prediction.bottomRight) {
                 const topLeft = prediction.topLeft;
                 const bottomRight = prediction.bottomRight;
