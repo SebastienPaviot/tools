@@ -47,10 +47,10 @@
             if (predictions.length > 0) {
         predictions.forEach(prediction => {
             console.log(prediction.boundingBox);
-            if (prediction.topLeft && prediction.bottomRight) {
+            if (prediction.boundingBox.topLeft && prediction.boundingBox.bottomRight) {
                 console.log("dessine");
-                const topLeft = prediction.topLeft;
-                const bottomRight = prediction.bottomRight;
+                const topLeft = prediction.boundingBox.topLeft;
+                const bottomRight = prediction.boundingBox.bottomRight;
 
                 ctx.beginPath();
                 ctx.lineWidth = "4";
