@@ -44,22 +44,27 @@
 
             ctx.drawImage(video, 0, 0);
             if (predictions.length > 0) {
-             predictions.forEach(prediction => {
-            if (prediction.boundingBox) {
-                console.log(prediction.boundingBox);
+        predictions.forEach(prediction => {
+            if (prediction.topLeft && prediction.bottomRight) {
+                const topLeft = prediction.topLeft;
+                const bottomRight = prediction.bottomRight;
+
                 ctx.beginPath();
                 ctx.lineWidth = "4";
                 ctx.strokeStyle = "red";
                 ctx.rect(
-                    prediction.boundingBox[0][0],
-                    prediction.boundingBox[0][1],
-                    prediction.boundingBox[1][0] - prediction.boundingBox[0][0],
-                    prediction.boundingBox[2][1] - prediction.boundingBox[0][1]
+                    topLeft[0],  // x du coin supérieur gauche
+                    topLeft[1],  // y du coin supérieur gauche
+                    bottomRight[0] - topLeft[0], // largeur
+                    bottomRight[1] - topLeft[1]  // hauteur
                 );
                 ctx.stroke();
             }
         });
+    } else {
+        console.log('Aucun visage détecté');
     }
+
 
             requestAnimationFrame(() => draw(video, predictions));
         }
