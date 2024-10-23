@@ -46,7 +46,7 @@
             ctx.drawImage(video, 0, 0);
             if (predictions.length > 0) {
         predictions.forEach(prediction => {
-            console.log(prediction.boundingbox);
+            console.log(prediction);
             if (prediction.topLeft && prediction.bottomRight) {
                 console.log("dessine");
                 const topLeft = prediction.topLeft;
@@ -82,7 +82,7 @@
                 draw(video, predictions);
             };
 
-            setInterval(detect, 100); // Détection toutes les 100 ms
+            setInterval(detect, 1000); // Détection toutes les 100 ms
         }
 
         main();
