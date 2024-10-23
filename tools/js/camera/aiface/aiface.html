@@ -41,8 +41,9 @@
             const ctx = canvas.getContext('2d');
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Efface le canvas avant de dessiner
 
-            //ctx.drawImage(video, 0, 0);
+            ctx.drawImage(video, 0, 0);
             if (predictions.length > 0) {
         predictions.forEach(prediction => {
             console.log(prediction);
