@@ -48,6 +48,7 @@
         predictions.forEach(prediction => {
             console.log(prediction);
             if (prediction.topLeft && prediction.bottomRight) {
+                console.log("dessine");
                 const topLeft = prediction.topLeft;
                 const bottomRight = prediction.bottomRight;
 
