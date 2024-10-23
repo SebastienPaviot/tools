@@ -11,7 +11,7 @@
     <video id="video" playsinline style="display:none;"></video>
     <canvas id="output"></canvas>
     <script>
-        console.log("v0.16");
+        console.log("v0.17");
         async function setupCamera() {
             const video = document.getElementById('video');
             const stream = await navigator.mediaDevices.getUserMedia({
@@ -46,7 +46,7 @@
             ctx.drawImage(video, 0, 0);
             if (predictions.length > 0) {
         predictions.forEach(prediction => {
-            console.log(prediction.boundingBox);
+            console.log(prediction.boundingBox.topLeft);
             if (prediction.boundingBox.topLeft && prediction.boundingBox.bottomRight) {
                 console.log("dessine");
                 const topLeft = prediction.boundingBox.topLeft;
