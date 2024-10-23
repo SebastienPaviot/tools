@@ -42,6 +42,7 @@
 
             ctx.drawImage(video, 0, 0);
             predictions.forEach(prediction => {
+                console.log(prediction);
                 ctx.beginPath();
                 ctx.lineWidth = "4";
                 ctx.strokeStyle = "red";
