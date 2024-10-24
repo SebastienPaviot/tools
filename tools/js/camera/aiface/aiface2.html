@@ -25,12 +25,26 @@
     canvas {
       border: 2px solid #fff;
     }
+    .links {
+      position: absolute;
+      bottom: 20px; /* Ajustez la marge depuis le bas si nécessaire */
+      left: 50%;
+      transform: translateX(-50%); /* Centre les liens horizontalement */
+      color: white; /* Couleur du texte des liens */
+      text-align: center; /* Centre le texte */
+    }
   </style>
 </head>
 <body>
 
   <video class="input_video" style="display:none;"></video>
   <canvas class="output_canvas" width="640px" height="480px"></canvas>
+  <div class="links">
+    <a href="https://medium.com/@paviot.sebastien/exploring-ai-in-the-browser-a-deep-dive-into-facemesh-technology-6c2968b4edca" style="color: white; text-decoration: none;">Exploring AI in the Browser: A Deep Dive into FaceMesh Technology</a>
+    <br />
+    <a href="https://github.com/SebastienPaviot/tools/blob/main/tools/js/camera/aiface/aiface2.html" style="color: white; text-decoration: none;">Github source code</a>
+  </div>
+
 
   <script>
     console.log("v0.5");
@@ -139,9 +153,6 @@ function addTears(landmarks, color = 'rgba(0, 0, 255, 0.5)', radius = 5) {
 }
 
   </script>
-<a href="https://medium.com/@paviot.sebastien/exploring-ai-in-the-browser-a-deep-dive-into-facemesh-technology-6c2968b4edca" >Exploring AI in the Browser: A Deep Dive into FaceMesh Technology </a>
-<br/>
-<a href="https://github.com/SebastienPaviot/tools/blob/main/tools/js/camera/aiface/aiface2.html" >Github source code </a>
 
 </body>
 </html>
