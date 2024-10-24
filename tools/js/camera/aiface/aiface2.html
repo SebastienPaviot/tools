@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facemesh with MediaPipe</title>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils"></script>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #282c34;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    canvas, video {
+      position: absolute;
+    }
+    canvas {
+      border: 2px solid #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <video class="input_video" style="display:none;"></video>
+  <canvas class="output_canvas" width="640px" height="480px"></canvas>
+
+  <script>
+    const videoElement = document.querySelector('.input_video');
+    const canvasElement = document.querySelector('.output_canvas');
+    const canvasCtx = canvasElement.getContext('2d');
+
+    // Initialisation du modèle FaceMesh
+    const faceMesh = new FaceMesh({locateFile: (file) => {
+      return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
+    }});
+    faceMesh.setOptions({
+      maxNumFaces: 1, // On détecte un seul visage
+      refineLandmarks: true, // Détection plus précise des yeux, lèvres
+      minDetectionConfidence: 0.5,
+      minTrackingConfidence: 0.5
+    });
+
+    faceMesh.onResults(onResults);
+
+    const camera = new Camera(videoElement, {
+      onFrame: async () => {
+        await faceMesh.send({image: videoElement});
+      },
+      width: 640,
+      height: 480
+    });
+    camera.start();
+
+    // Fonction appelée après chaque détection de visage
+    function onResults(results) {
+      canvasCtx.save();
+      canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+      canvasCtx.drawImage(
+        results.image, 0, 0, canvasElement.width, canvasElement.height);
+
+      if (results.multiFaceLandmarks) {
+        for (const landmarks of results.multiFaceLandmarks) {
+          // Modifier l'expression faciale
+          modifyExpression(landmarks);
+
+          // Dessiner les points et les connexions du visage modifié
+          drawModifiedFace(landmarks);
+
+          // Ajouter des effets visuels comme des larmes
+          addTears(landmarks);
+        }
+      }
+      canvasCtx.restore();
+    }
+
+    // Fonction pour manipuler l'expression faciale
+    function modifyExpression(landmarks) {
+      // Identifier les points des coins de la bouche
+      const leftMouthCorner = landmarks[61]; // Coin gauche de la bouche
+      const rightMouthCorner = landmarks[291]; // Coin droit de la bouche
+
+      // Abaisser les coins de la bouche pour simuler de la tristesse
+      leftMouthCorner.y += 0.02;
+      rightMouthCorner.y += 0.02;
+    }
+
+    // Fonction pour dessiner le visage modifié
+    function drawModifiedFace(landmarks) {
+      drawConnectors(canvasCtx, landmarks, FACEMESH_TESSELATION,
+                     {color: '#C0C0C070', lineWidth: 1});
+      drawConnectors(canvasCtx, landmarks, FACEMESH_RIGHT_EYE, {color: '#FF3030'});
+      drawConnectors(canvasCtx, landmarks, FACEMESH_LEFT_EYE, {color: '#30FF30'});
+      drawConnectors(canvasCtx, landmarks, FACEMESH_LIPS, {color: '#E0E0E0'});
+    }
+
+    // Fonction pour ajouter des larmes sous les yeux
+    function addTears(landmarks) {
+      const eyeLeftBottom = landmarks[145]; // Point en bas de l'œil gauche
+      const eyeRightBottom = landmarks[374]; // Point en bas de l'œil droit
+
+      // Dessiner des larmes sous les yeux
+      canvasCtx.fillStyle = 'rgba(0, 0, 255, 0.5)';
+      canvasCtx.beginPath();
+      canvasCtx.arc(eyeLeftBottom.x * canvasElement.width, eyeLeftBottom.y * canvasElement.height, 5, 0, Math.PI * 2);
+      canvasCtx.arc(eyeRightBottom.x * canvasElement.width, eyeRightBottom.y * canvasElement.height, 5, 0, Math.PI * 2);
+      canvasCtx.fill();
+    }
+  </script>
+
+</body>
+</html>
