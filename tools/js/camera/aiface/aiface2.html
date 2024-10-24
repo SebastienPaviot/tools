@@ -76,9 +76,8 @@
           // Dessiner les points et les connexions du visage modifié
           drawModifiedFace(landmarks);
 
-          // Démarrez l'animation
-          addTears(landmarks); // Assurez-vous d'appeler cette fonction après avoir détecté les landmarks
-          animateTears();
+          // Ajouter des effets visuels comme des larmes
+          addTears(landmarks);
         }
       }
       canvasCtx.restore();
@@ -104,55 +103,45 @@
       drawConnectors(canvasCtx, landmarks, FACEMESH_LIPS, {color: '#E0E0E0'});
     }
 
-    let tears = []; // Tableau pour stocker les positions des larmes
-
-// Fonction pour ajouter une larme
-function addTears(landmarks) {
+    // Fonction pour ajouter des larmes sous les yeux
+function addTears(landmarks, color = 'rgba(0, 0, 255, 0.5)', radius = 5) {
   const eyeLeftBottom = landmarks[145]; // Point en bas de l'œil gauche
   const eyeRightBottom = landmarks[374]; // Point en bas de l'œil droit
 
-  // Ajouter des larmes à la position initiale
-  tears.push({
-    x: eyeLeftBottom.x * canvasElement.width,
-    y: eyeLeftBottom.y * canvasElement.height + 5, // Ajustement pour l'effet de larme
-    radius: 5,
-    color: 'rgba(0, 0, 255, 0.5)',
-  });
-  
-  tears.push({
-    x: eyeRightBottom.x * canvasElement.width,
-    y: eyeRightBottom.y * canvasElement.height + 5,
-    radius: 5,
-    color: 'rgba(0, 0, 255, 0.5)',
-  });
+  // Dessiner des larmes sous les yeux
+  canvasCtx.fillStyle = color;
+
+  // Larmicules gauche
+  canvasCtx.beginPath();
+  canvasCtx.ellipse(
+    eyeLeftBottom.x * canvasElement.width,
+    eyeLeftBottom.y * canvasElement.height + radius, // Ajuste la position pour donner l'effet de larme
+    radius, // Rayon horizontal
+    radius * 1.5, // Rayon vertical, plus long pour simuler la larme
+    0, // Pas de rotation
+    0, // Angle de départ
+    Math.PI * 2 // Angle de fin
+  );
+  canvasCtx.fill();
+
+  // Larmicules droit
+  canvasCtx.beginPath();
+  canvasCtx.ellipse(
+    eyeRightBottom.x * canvasElement.width,
+    eyeRightBottom.y * canvasElement.height + radius, // Ajuste la position pour donner l'effet de larme
+    radius,
+    radius * 1.5,
+    0,
+    0,
+    Math.PI * 2
+  );
+  canvasCtx.fill();
 }
-
-// Fonction pour animer les larmes
-function animateTears() {
-  canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height); // Efface le canvas
-  for (let i = 0; i < tears.length; i++) {
-    const tear = tears[i];
-    // Dessiner la larme
-    canvasCtx.fillStyle = tear.color;
-    canvasCtx.beginPath();
-    canvasCtx.ellipse(tear.x, tear.y, tear.radius, tear.radius * 1.5, 0, 0, Math.PI * 2);
-    canvasCtx.fill();
-
-    // Mettre à jour la position de la larme pour simuler la coulée
-    tear.y += 2; // Ajustez la vitesse ici
-
-    // Si la larme atteint la bouche, la supprimer ou la traiter
-    if (tear.y > canvasElement.height - 50) { // Supposons que la bouche soit à 50px du bas
-      tears.splice(i, 1); // Enlève la larme si elle est en bas
-      i--; // Réduire l'index après suppression
-    }
-  }
-
-  requestAnimationFrame(animateTears); // Appel récursif pour l'animation
-}
-
 
   </script>
+<a href="https://medium.com/@paviot.sebastien/exploring-ai-in-the-browser-a-deep-dive-into-facemesh-technology-6c2968b4edca" >Exploring AI in the Browser: A Deep Dive into FaceMesh Technology </a>
+<br/>
+<a href="https://github.com/SebastienPaviot/tools/blob/main/tools/js/camera/aiface/aiface2.html" >Github source code </a>
 
 </body>
 </html>
