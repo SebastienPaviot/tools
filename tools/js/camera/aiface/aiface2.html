@@ -104,17 +104,40 @@
     }
 
     // Fonction pour ajouter des larmes sous les yeux
-    function addTears(landmarks) {
-      const eyeLeftBottom = landmarks[145]; // Point en bas de l'œil gauche
-      const eyeRightBottom = landmarks[374]; // Point en bas de l'œil droit
+function addTears(landmarks, color = 'rgba(0, 0, 255, 0.5)', radius = 5) {
+  const eyeLeftBottom = landmarks[145]; // Point en bas de l'œil gauche
+  const eyeRightBottom = landmarks[374]; // Point en bas de l'œil droit
 
-      // Dessiner des larmes sous les yeux
-      canvasCtx.fillStyle = 'rgba(0, 0, 255, 0.5)';
-      canvasCtx.beginPath();
-      canvasCtx.arc(eyeLeftBottom.x * canvasElement.width, eyeLeftBottom.y * canvasElement.height, 5, 0, Math.PI * 2);
-      canvasCtx.arc(eyeRightBottom.x * canvasElement.width, eyeRightBottom.y * canvasElement.height, 5, 0, Math.PI * 2);
-      canvasCtx.fill();
-    }
+  // Dessiner des larmes sous les yeux
+  canvasCtx.fillStyle = color;
+
+  // Larmicules gauche
+  canvasCtx.beginPath();
+  canvasCtx.ellipse(
+    eyeLeftBottom.x * canvasElement.width,
+    eyeLeftBottom.y * canvasElement.height + radius, // Ajuste la position pour donner l'effet de larme
+    radius, // Rayon horizontal
+    radius * 1.5, // Rayon vertical, plus long pour simuler la larme
+    0, // Pas de rotation
+    0, // Angle de départ
+    Math.PI * 2 // Angle de fin
+  );
+  canvasCtx.fill();
+
+  // Larmicules droit
+  canvasCtx.beginPath();
+  canvasCtx.ellipse(
+    eyeRightBottom.x * canvasElement.width,
+    eyeRightBottom.y * canvasElement.height + radius, // Ajuste la position pour donner l'effet de larme
+    radius,
+    radius * 1.5,
+    0,
+    0,
+    Math.PI * 2
+  );
+  canvasCtx.fill();
+}
+
   </script>
 
 </body>
