@@ -14,6 +14,18 @@
   <canvas id="canvas" width="500" height="500"></canvas>
 
   <script>
+
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function attendreDeuxSecondes() {
+  console.log("Attente de 2 secondes...");
+  await delay(2000);
+  console.log("2 secondes se sont écoulées");
+}
+
+
     let sourceImg = new Image();
     let targetImg = new Image();
     let sourceFace, targetFace;
@@ -46,6 +58,7 @@
 }
 
     async function detectFaces() {
+      attendreDeuxSecondes();
       console.log("detectfaces");
       console.log(sourceImg);
       const srcMat = cv.imread(sourceImg);
