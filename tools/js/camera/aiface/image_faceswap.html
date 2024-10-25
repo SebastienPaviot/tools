@@ -55,6 +55,12 @@
         sourceImg.onload = targetImg.onload = resolve;
       });
 
+      // Vérifier si l'image source et cible sont bien des HTMLImageElements
+      if (!(sourceImg instanceof HTMLImageElement) || !(targetImg instanceof HTMLImageElement)) {
+        console.error("L'une des images n'est pas un HTMLImageElement.");
+        return;
+      }
+
       // Detect landmarks for both images
       [sourceFaceLandmarks, targetFaceLandmarks] = await Promise.all([
         model.estimateFaces({ input: sourceImg }),
