@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Face Swap with TensorFlow.js</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/face-landmarks-detection"></script>
+</head>
+<body>
+  <h1>Face Swap Demo</h1>
+  
+  <!-- Upload source and target images -->
+  <input type="file" id="sourceImage" accept="image/*" onchange="loadImage(event, 'source')">
+  <input type="file" id="targetImage" accept="image/*" onchange="loadImage(event, 'target')">
+  
+  <canvas id="canvas" width="500" height="500"></canvas>
+  
+  <script>
+    let sourceFaceLandmarks, targetFaceLandmarks;
+    let sourceImg = new Image();
+    let targetImg = new Image();
+    let model;
+
+    async function loadModel() {
+      model = await faceLandmarksDetection.load(faceLandmarksDetection.SupportedPackages.mediapipeFacemesh);
+    }
+
+    function loadImage(event, type) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        if (type === 'source') {
+          sourceImg.src = e.target.result;
+        } else if (type === 'target') {
+          targetImg.src = e.target.result;
+        }
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+
+    async function detectLandmarks() {
+      // Wait for both images to load
+      await new Promise(resolve => {
+        sourceImg.onload = targetImg.onload = resolve;
+      });
+
+      // Detect landmarks for both images
+      [sourceFaceLandmarks, targetFaceLandmarks] = await Promise.all([
+        model.estimateFaces({ input: sourceImg }),
+        model.estimateFaces({ input: targetImg })
+      ]);
+
+      if (sourceFaceLandmarks.length > 0 && targetFaceLandmarks.length > 0) {
+        swapFaces();
+      } else {
+        console.error("Face landmarks not detected");
+      }
+    }
+
+    function swapFaces() {
+      const canvas = document.getElementById('canvas');
+      const ctx = canvas.getContext('2d');
+
+      // Get first set of face landmarks for simplicity
+      const sourceFace = sourceFaceLandmarks[0];
+      const targetFace = targetFaceLandmarks[0];
+
+      // Extract key points (eyes, nose) from landmarks for alignment
+      const sourceLeftEye = sourceFace.keypoints[33];
+      const sourceRightEye = sourceFace.keypoints[263];
+      const targetLeftEye = targetFace.keypoints[33];
+      const targetRightEye = targetFace.keypoints[263];
+
+      // Calculate scale and rotation
+      const scale = calculateScale(sourceLeftEye, sourceRightEye, targetLeftEye, targetRightEye);
+      const angle = calculateRotation(sourceLeftEye, sourceRightEye, targetLeftEye, targetRightEye);
+
+      // Apply transformations and draw swapped face
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.save();
+      ctx.translate(targetLeftEye.x, targetLeftEye.y);
+      ctx.rotate(angle);
+      ctx.scale(scale, scale);
+      ctx.drawImage(sourceImg, -sourceLeftEye.x, -sourceLeftEye.y);
+      ctx.restore();
+    }
+
+    function calculateScale(sourceLeftEye, sourceRightEye, targetLeftEye, targetRightEye) {
+      const sourceDist = Math.hypot(sourceRightEye.x - sourceLeftEye.x, sourceRightEye.y - sourceLeftEye.y);
+      const targetDist = Math.hypot(targetRightEye.x - targetLeftEye.x, targetRightEye.y - targetLeftEye.y);
+      return targetDist / sourceDist;
+    }
+
+    function calculateRotation(sourceLeftEye, sourceRightEye, targetLeftEye, targetRightEye) {
+      const sourceAngle = Math.atan2(sourceRightEye.y - sourceLeftEye.y, sourceRightEye.x - sourceLeftEye.x);
+      const targetAngle = Math.atan2(targetRightEye.y - targetLeftEye.y, targetRightEye.x - targetLeftEye.x);
+      return targetAngle - sourceAngle;
+    }
+
+    window.onload = async () => {
+      await loadModel();
+    };
+
+    // Run face swap when both images are loaded
+    document.getElementById('targetImage').addEventListener('change', detectLandmarks);
+  </script>
+</body>
+</html>
