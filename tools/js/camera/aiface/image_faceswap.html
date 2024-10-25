@@ -19,16 +19,29 @@
     let sourceFace, targetFace;
 
     function loadImage(event, type) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        if (type === 'source') {
-          sourceImg.src = e.target.result;
-        } else if (type === 'target') {
-          targetImg.src = e.target.result;
-        }
-      };
-      reader.readAsDataURL(event.target.files[0]);
-    }
+  const file = event.target.files[0];
+  const reader = new FileReader();
+
+  reader.onload = function(e) {
+    const img = new Image();
+    img.src = e.target.result;
+    
+    img.onload = function() {
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = img.width;
+      tempCanvas.height = img.height;
+      const ctx = tempCanvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+
+      if (type === 'source') {
+        sourceImg = tempCanvas;
+      } else if (type === 'target') {
+        targetImg = tempCanvas;
+      }
+    };
+  };
+  reader.readAsDataURL(file);
+}
 
     async function detectFaces() {
       console.log("detectfaces");
