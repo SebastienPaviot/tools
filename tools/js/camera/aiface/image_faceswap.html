@@ -33,13 +33,18 @@
     }
 
     function loadImage(event, type) {
+      console.log("loadimage: " + type);
       const reader = new FileReader();
       reader.onload = function(e) {
+        console.log("Image loaded successfully for type:", type); // Nouveau log ici
         if (type === 'source') {
           sourceImg.src = e.target.result;
         } else if (type === 'target') {
           targetImg.src = e.target.result;
         }
+      };
+      reader.onerror = function() {
+        console.error("Error loading image for type:", type);
       };
       reader.readAsDataURL(event.target.files[0]);
     }
