@@ -77,6 +77,7 @@ async function attendreDeuxSecondes() {
         await faceCascade.load(modelPath); // Chargement du modèle
 
       console.log("loaded model");
+      console.log(faceCascade);
       const srcGray = new cv.Mat();
       cv.cvtColor(srcMat, srcGray, cv.COLOR_RGBA2GRAY);
       const tgtGray = new cv.Mat();
