@@ -3,130 +3,110 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Face Swap with TensorFlow.js</title>
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/face-landmarks-detection"></script>
+  <title>Face Swap with OpenCV.js and NumJS</title>
+  <script src="https://docs.opencv.org/3.4/opencv.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/numjs/0.16.0/numjs.min.js"></script>
 </head>
 <body>
-  <h1>Face Swap Demo v0.61</h1>
-  
-  <!-- Upload source and target images -->
+  <h1>Face Swap Demo</h1>
   <input type="file" id="sourceImage" accept="image/*" onchange="loadImage(event, 'source')">
   <input type="file" id="targetImage" accept="image/*" onchange="loadImage(event, 'target')">
-  
   <canvas id="canvas" width="500" height="500"></canvas>
-  
+
   <script>
-    let sourceFaceLandmarks, targetFaceLandmarks;
     let sourceImg = new Image();
     let targetImg = new Image();
-    let model;
-
-    async function loadModel() {
-     // model = await faceLandmarksDetection.load(faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh); // Modèle spécifique ici
-     const detectorConfig = {
-        runtime: 'tfjs',
-        solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh',
-      }
-      model = await faceLandmarksDetection.createDetector(faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh, detectorConfig);
-
-    }
+    let sourceFace, targetFace;
 
     function loadImage(event, type) {
-      console.log("loadimage: " + type);
       const reader = new FileReader();
       reader.onload = function(e) {
-        console.log("Image loaded successfully for type:", type); // Nouveau log ici
         if (type === 'source') {
           sourceImg.src = e.target.result;
         } else if (type === 'target') {
           targetImg.src = e.target.result;
         }
       };
-      reader.onerror = function() {
-        console.error("Error loading image for type:", type);
-      };
       reader.readAsDataURL(event.target.files[0]);
     }
 
-    async function detectLandmarks() {
-      console.log("detectlandmarks");
-      // Wait for both images to load
-      await new Promise(resolve => {
-        sourceImg.onload = targetImg.onload = resolve;
-      });
+    async function detectFaces() {
+      const srcMat = cv.imread(sourceImg);
+      const tgtMat = cv.imread(targetImg);
+      const faceCascade = new cv.CascadeClassifier();
+      await faceCascade.load('haarcascade_frontalface_default.xml');
 
-      // Vérifier si l'image source et cible sont bien des HTMLImageElements
-      if (!(sourceImg instanceof HTMLImageElement) || !(targetImg instanceof HTMLImageElement)) {
-        console.error("L'une des images n'est pas un HTMLImageElement.");
-        return;
+      const srcGray = new cv.Mat();
+      cv.cvtColor(srcMat, srcGray, cv.COLOR_RGBA2GRAY);
+      const tgtGray = new cv.Mat();
+      cv.cvtColor(tgtMat, tgtGray, cv.COLOR_RGBA2GRAY);
+
+      const srcFaces = new cv.RectVector();
+      const tgtFaces = new cv.RectVector();
+      faceCascade.detectMultiScale(srcGray, srcFaces, 1.1, 3, 0);
+      faceCascade.detectMultiScale(tgtGray, tgtFaces, 1.1, 3, 0);
+
+      if (srcFaces.size() > 0 && tgtFaces.size() > 0) {
+        sourceFace = srcFaces.get(0);
+        targetFace = tgtFaces.get(0);
+        swapFaces(srcMat, tgtMat);
       } else {
-        console.log("image ok");
+        console.error("No faces detected in one or both images.");
       }
-      console.log(sourceImg);
-      console.log(targetImg);
 
-      // Detect landmarks for both images
-      [sourceFaceLandmarks, targetFaceLandmarks] = await Promise.all([
-          model.estimateFaces(sourceImg),
-          model.estimateFaces(targetImg)
-        ]);
-
-      if (sourceFaceLandmarks.length > 0 && targetFaceLandmarks.length > 0) {
-        swapFaces();
-      } else {
-        console.error("Face landmarks not detected");
-      }
+      srcMat.delete(); tgtMat.delete(); srcGray.delete(); tgtGray.delete();
+      srcFaces.delete(); tgtFaces.delete();
     }
 
-    function swapFaces() {
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
+    function swapFaces(srcMat, tgtMat) {
+      const canvas = document.getElementById('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = targetImg.width;
+      canvas.height = targetImg.height;
 
-    // Dessiner l'image cible sur le canevas
-    ctx.drawImage(targetImg, 0, 0, canvas.width, canvas.height);
+      const sourceRoi = srcMat.roi(sourceFace);
+      const targetRoi = tgtMat.roi(targetFace);
 
-    // Obtenez le premier ensemble de repères faciaux pour la source et la cible
-    const sourceFace = sourceFaceLandmarks[0];
-    const targetFace = targetFaceLandmarks[0];
+      const srcPoints = nj.array([
+        [sourceFace.x, sourceFace.y],
+        [sourceFace.x + sourceFace.width, sourceFace.y],
+        [sourceFace.x, sourceFace.y + sourceFace.height]
+      ]);
 
-    // Extraire les points clés (yeux, nez) pour l'alignement
-    const sourceLeftEye = sourceFace.keypoints[33];
-    const sourceRightEye = sourceFace.keypoints[263];
-    const targetLeftEye = targetFace.keypoints[33];
-    const targetRightEye = targetFace.keypoints[263];
+      const tgtPoints = nj.array([
+        [targetFace.x, targetFace.y],
+        [targetFace.x + targetFace.width, targetFace.y],
+        [targetFace.x, targetFace.y + targetFace.height]
+      ]);
 
-    // Calculer l'échelle et la rotation
-    const scale = calculateScale(sourceLeftEye, sourceRightEye, targetLeftEye, targetRightEye);
-    const angle = calculateRotation(sourceLeftEye, sourceRightEye, targetLeftEye, targetRightEye);
+      const transformationMatrix = calculateAffineTransform(srcPoints, tgtPoints);
 
-    // Appliquer les transformations et dessiner le visage de la source sur l'image cible
-    ctx.save();
-    ctx.translate(targetLeftEye.x, targetLeftEye.y); // Positionner au niveau de l'œil gauche de la cible
-    ctx.rotate(angle); // Appliquer la rotation
-    ctx.scale(scale, scale); // Appliquer l'échelle
-    ctx.drawImage(sourceImg, -sourceLeftEye.x, -sourceLeftEye.y); // Dessiner l'image de la source
-    ctx.restore();
-}
+      const warpMat = new cv.Mat();
+      cv.warpAffine(sourceRoi, targetRoi, transformationMatrix, targetRoi.size());
 
-    function calculateScale(sourceLeftEye, sourceRightEye, targetLeftEye, targetRightEye) {
-      const sourceDist = Math.hypot(sourceRightEye.x - sourceLeftEye.x, sourceRightEye.y - sourceLeftEye.y);
-      const targetDist = Math.hypot(targetRightEye.x - targetLeftEye.x, targetRightEye.y - targetLeftEye.y);
-      return targetDist / sourceDist;
+      cv.imshow(canvas, tgtMat);
+
+      sourceRoi.delete(); targetRoi.delete(); warpMat.delete();
     }
 
-    function calculateRotation(sourceLeftEye, sourceRightEye, targetLeftEye, targetRightEye) {
-      const sourceAngle = Math.atan2(sourceRightEye.y - sourceLeftEye.y, sourceRightEye.x - sourceLeftEye.x);
-      const targetAngle = Math.atan2(targetRightEye.y - targetLeftEye.y, targetRightEye.x - targetLeftEye.x);
-      return targetAngle - sourceAngle;
+    function calculateAffineTransform(srcPoints, tgtPoints) {
+      const srcMean = srcPoints.mean(0);
+      const tgtMean = tgtPoints.mean(0);
+      const centeredSrc = srcPoints.subtract(srcMean);
+      const centeredTgt = tgtPoints.subtract(tgtMean);
+
+      const rotationMatrix = centeredTgt.transpose().dot(centeredSrc).tolist();
+      const [U, , V] = nj.linalg.svd(rotationMatrix);
+
+      const rotation = nj.dot(U, V);
+      const scale = tgtPoints.norm() / srcPoints.norm();
+      const translation = tgtMean.subtract(nj.dot(rotation, srcMean).multiply(scale));
+
+      const affine = nj.concatenate([rotation.multiply(scale), translation.reshape(2, 1)], 1);
+      return cv.matFromArray(2, 3, cv.CV_64F, affine.flatten().tolist());
     }
 
-    window.onload = async () => {
-      await loadModel();
-    };
-
-    // Run face swap when both images are loaded
-    document.getElementById('targetImage').addEventListener('change', detectLandmarks);
+    document.getElementById('targetImage').addEventListener('change', detectFaces);
   </script>
 </body>
 </html>
