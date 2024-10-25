@@ -66,7 +66,9 @@ async function attendreDeuxSecondes() {
       console.log(targetImg);
       const tgtMat = cv.imread(targetImg);
       console.log(tgtMat);
+      console.log("classifier");
       const faceCascade = new cv.CascadeClassifier();
+      console.log("load model");
       await faceCascade.load('haarcascade_frontalface_default.xml');
       console.log("loaded model");
       const srcGray = new cv.Mat();
