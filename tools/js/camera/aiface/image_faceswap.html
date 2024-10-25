@@ -13,11 +13,25 @@
     <input type="file" id="destinationImageUpload" accept="image/*">
     <canvas id="canvas" style="display:none;"></canvas>
     <script>
-        // Charger et initialiser les modèles de détection de visage
-        Promise.all([
-            faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
-            faceapi.nets.faceLandmark68Net.loadFromUri('/models')
-        ]).then(() => console.log("Models loaded"));
+         window.onload = function() {
+            setTimeout(() => {
+                Promise.all([
+                    faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
+                    faceapi.nets.faceLandmark68Net.loadFromUri('/models')
+                ]).then(() => {
+                    console.log("Modèles chargés !");
+                    // Ici, vous pouvez continuer avec le reste de votre code
+                });
+            }, 10000); // Attendre 10 secondes
+        };
+
+        function loadModels() {
+          setTimeout(async () => {
+              await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
+              await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
+              console.log("Models loaded after 10 seconds");
+          }, 10000); // Attendre 10 secondes
+      }
 
         async function detectLandmarks(imageElement) {
             const detections = await faceapi.detectSingleFace(imageElement, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks();
