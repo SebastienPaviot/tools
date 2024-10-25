@@ -73,9 +73,14 @@ async function attendreDeuxSecondes() {
       let faceCascade = new cv.CascadeClassifier();
 
         // Assurez-vous que le fichier est accessible
-        const modelPath = './haarcascade_frontalface_default.xml'; // Utilisez un chemin correct pour ce fichier
-        var res=true;
-        await faceCascade.load(modelPath); // Chargement du modèle
+        //const modelPath = 'haarcascade_frontalface_default.xml'; // Utilisez un chemin correct pour ce fichier
+        //var res=true;
+        //await faceCascade.load(modelPath); // Chargement du modèle
+
+        let faceCascadeFile = 'haarcascade_frontalface_default.xml'; // path to xml
+        utils.createFileFromUrl(faceCascadeFile, faceCascadeFile, () => {
+          classifier.load(faceCascadeFile); // in the callback, load the cascade from file 
+        });
 
       console.log("loaded model");
       console.log(faceCascade);
