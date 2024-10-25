@@ -8,7 +8,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/numjs/0.16.0/numjs.min.js"></script>
 </head>
 <body>
-  <h1>Face Swap Demo v0.722</h1>
+  <h1>Face Swap Demo v0.723</h1>
   <input type="file" id="sourceImage" accept="image/*" onchange="loadImage(event, 'source')">
   <input type="file" id="targetImage" accept="image/*" onchange="loadImage(event, 'target')">
   <canvas id="canvas" width="500" height="500"></canvas>
@@ -77,6 +77,21 @@ createFileFromUrl = function(path, url, callback) {
         request.send();
     };
 
+    let faceCascade = new cv.CascadeClassifier();
+
+        // Assurez-vous que le fichier est accessible
+        //const modelPath = 'haarcascade_frontalface_default.xml'; // Utilisez un chemin correct pour ce fichier
+        //var res=true;
+        //await faceCascade.load(modelPath); // Chargement du modèle
+
+        let faceCascadeFile = 'haarcascade_frontalface_default.xml'; // path to xml
+        createFileFromUrl(faceCascadeFile, faceCascadeFile, () => {
+          faceCascade.load(faceCascadeFile); // in the callback, load the cascade from file 
+        });
+        attendreDeuxSecondes();
+      console.log("loaded model");
+      console.log(faceCascade);
+
 
     async function detectFaces() {
       try {
@@ -91,20 +106,7 @@ createFileFromUrl = function(path, url, callback) {
       console.log("classifier");
       //const faceCascade = new cv.CascadeClassifier();
       console.log("load model");
-      let faceCascade = new cv.CascadeClassifier();
-
-        // Assurez-vous que le fichier est accessible
-        //const modelPath = 'haarcascade_frontalface_default.xml'; // Utilisez un chemin correct pour ce fichier
-        //var res=true;
-        //await faceCascade.load(modelPath); // Chargement du modèle
-
-        let faceCascadeFile = 'haarcascade_frontalface_default.xml'; // path to xml
-        createFileFromUrl(faceCascadeFile, faceCascadeFile, () => {
-          faceCascade.load(faceCascadeFile); // in the callback, load the cascade from file 
-        });
-        attendreDeuxSecondes();
-      console.log("loaded model");
-      console.log(faceCascade);
+      
       const srcGray = new cv.Mat();
       cv.cvtColor(srcMat, srcGray, cv.COLOR_RGBA2GRAY);
       const tgtGray = new cv.Mat();
