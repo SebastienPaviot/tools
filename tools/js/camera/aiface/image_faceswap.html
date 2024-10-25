@@ -12,7 +12,7 @@
   <input type="file" id="sourceImage" accept="image/*" onchange="loadImage(event, 'source')">
   <input type="file" id="targetImage" accept="image/*" onchange="loadImage(event, 'target')">
   <canvas id="canvas" width="500" height="500"></canvas>
-
+  <button id="but">go</button>
   <script>
 
 function delay(ms) {
@@ -139,7 +139,7 @@ async function attendreDeuxSecondes() {
       return cv.matFromArray(2, 3, cv.CV_64F, affine.flatten().tolist());
     }
 
-    document.getElementById('targetImage').addEventListener('change', detectFaces);
+    document.getElementById('but').addEventListener('click', detectFaces);
   </script>
 </body>
 </html>
