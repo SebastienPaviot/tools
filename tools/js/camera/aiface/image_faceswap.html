@@ -8,7 +8,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/face-landmarks-detection"></script>
 </head>
 <body>
-  <h1>Face Swap Demo</h1>
+  <h1>Face Swap Demo v0.5</h1>
   
   <!-- Upload source and target images -->
   <input type="file" id="sourceImage" accept="image/*" onchange="loadImage(event, 'source')">
@@ -23,7 +23,7 @@
     let model;
 
     async function loadModel() {
-      model = await faceLandmarksDetection.load(faceLandmarksDetection.SupportedPackages.mediapipeFacemesh);
+      model = await faceLandmarksDetection.load(faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh); // Modèle spécifique ici
     }
 
     function loadImage(event, type) {
