@@ -8,7 +8,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/face-landmarks-detection"></script>
 </head>
 <body>
-  <h1>Face Swap Demo v0.56</h1>
+  <h1>Face Swap Demo v0.57</h1>
   
   <!-- Upload source and target images -->
   <input type="file" id="sourceImage" accept="image/*" onchange="loadImage(event, 'source')">
@@ -60,7 +60,11 @@
       if (!(sourceImg instanceof HTMLImageElement) || !(targetImg instanceof HTMLImageElement)) {
         console.error("L'une des images n'est pas un HTMLImageElement.");
         return;
+      } else {
+        console.log("image ok");
       }
+
+      console.log(targetImg);
 
       // Detect landmarks for both images
       [sourceFaceLandmarks, targetFaceLandmarks] = await Promise.all([
