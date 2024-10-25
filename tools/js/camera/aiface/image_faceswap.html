@@ -50,6 +50,7 @@
     }
 
     async function detectLandmarks() {
+      console.log("detectlandmarks");
       // Wait for both images to load
       await new Promise(resolve => {
         sourceImg.onload = targetImg.onload = resolve;
