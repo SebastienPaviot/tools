@@ -8,7 +8,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/face-landmarks-detection"></script>
 </head>
 <body>
-  <h1>Face Swap Demo v0.59</h1>
+  <h1>Face Swap Demo v0.60</h1>
   
   <!-- Upload source and target images -->
   <input type="file" id="sourceImage" accept="image/*" onchange="loadImage(event, 'source')">
@@ -68,9 +68,9 @@
 
       // Detect landmarks for both images
       [sourceFaceLandmarks, targetFaceLandmarks] = await Promise.all([
-        model.estimateFaces({ sourceImg }),
-        model.estimateFaces({ targetImg })
-      ]);
+          model.estimateFaces(sourceImg),
+          model.estimateFaces(targetImg)
+        ]);
 
       if (sourceFaceLandmarks.length > 0 && targetFaceLandmarks.length > 0) {
         swapFaces();
