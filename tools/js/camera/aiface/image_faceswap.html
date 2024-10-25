@@ -1,197 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Face Swap with OpenCV.js and NumJS</title>
-  <script src="https://docs.opencv.org/3.4/opencv.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/nicolaspanel/numjs@0.15.1/dist/numjs.min.js"></script>  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.0.0/math.min.js"></script>
-  <script src="https://unpkg.com/svd-js" type="application/javascript"></script> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Swap 1</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/face-api.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/delaunator@5.0.0/delaunator.min.js"></script>
 </head>
 <body>
-  <h1>Face Swap Demo v0.76</h1>
-  <input type="file" id="sourceImage" accept="image/*" onchange="loadImage(event, 'source')">
-  <input type="file" id="targetImage" accept="image/*" onchange="loadImage(event, 'target')">
-  <canvas id="canvas" width="500" height="500"></canvas>
-  <button id="but">go</button>
-  <script>
+    <input type="file" id="sourceImageUpload" accept="image/*">
+    <input type="file" id="destinationImageUpload" accept="image/*">
+    <canvas id="canvas" style="display:none;"></canvas>
+    <script>
+        // Charger et initialiser les modèles de détection de visage
+        Promise.all([
+            faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
+            faceapi.nets.faceLandmark68Net.loadFromUri('/models')
+        ]).then(() => console.log("Models loaded"));
 
-function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
+        async function detectLandmarks(imageElement) {
+            const detections = await faceapi.detectSingleFace(imageElement, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks();
+            if (detections) {
+                return detections.landmarks.positions.map(point => [point.x, point.y]);
+            }
+            return [];
+        }
 
-async function attendreDeuxSecondes() {
-  console.log("Attente de 2 secondes...");
-  await delay(10000);
-  console.log("2 secondes se sont écoulées");
-}
+        async function processImages() {
+            const sourceImg = document.getElementById('sourceImageUpload').files[0];
+            const destinationImg = document.getElementById('destinationImageUpload').files[0];
+            
+            if (sourceImg && destinationImg) {
+                const sourceImage = await faceapi.bufferToImage(sourceImg);
+                const destinationImage = await faceapi.bufferToImage(destinationImg);
+                
+                const sourceLandmarks = await detectLandmarks(sourceImage);
+                const destinationLandmarks = await detectLandmarks(destinationImage);
 
+                if (sourceLandmarks.length && destinationLandmarks.length) {
+                    const delaunayTriangles = Delaunator.from(destinationLandmarks).triangles;
+                    const canvas = document.getElementById("canvas");
+                    const ctx = canvas.getContext("2d");
+                    canvas.width = destinationImage.width;
+                    canvas.height = destinationImage.height;
+                    
+                    // Dessinez les triangles et transférez les pixels
+                    for (let i = 0; i < delaunayTriangles.length; i += 3) {
+                        const srcPoints = [sourceLandmarks[delaunayTriangles[i]], sourceLandmarks[delaunayTriangles[i + 1]], sourceLandmarks[delaunayTriangles[i + 2]]];
+                        const dstPoints = [destinationLandmarks[delaunayTriangles[i]], destinationLandmarks[delaunayTriangles[i + 1]], destinationLandmarks[delaunayTriangles[i + 2]]];
 
-    let sourceImg = new Image();
-    let targetImg = new Image();
-    let sourceFace, targetFace;
+                        const srcTriangle = new Path2D();
+                        srcTriangle.moveTo(srcPoints[0][0], srcPoints[0][1]);
+                        srcTriangle.lineTo(srcPoints[1][0], srcPoints[1][1]);
+                        srcTriangle.lineTo(srcPoints[2][0], srcPoints[2][1]);
+                        srcTriangle.closePath();
 
-    function loadImage(event, type) {
-  const file = event.target.files[0];
-  const reader = new FileReader();
-
-  reader.onload = function(e) {
-    const img = new Image();
-    img.src = e.target.result;
-    
-    img.onload = function() {
-      const tempCanvas = document.createElement('canvas');
-      tempCanvas.width = img.width;
-      tempCanvas.height = img.height;
-      const ctx = tempCanvas.getContext('2d');
-      ctx.drawImage(img, 0, 0);
-
-      if (type === 'source') {
-        sourceImg = tempCanvas;
-        console.log(sourceImg);
-      } else if (type === 'target') {
-        targetImg = tempCanvas;
-        console.log(targetImg);
-      }
-    };
-  };
-  reader.readAsDataURL(file);
-}
-
-
-
-createFileFromUrl = function(path, url, callback) {
-        let request = new XMLHttpRequest();
-        request.open('GET', url, true);
-        request.responseType = 'arraybuffer';
-        request.onload = function(ev) {
-            if (request.readyState === 4) {
-                if (request.status === 200) {
-                    let data = new Uint8Array(request.response);
-                    cv.FS_createDataFile('/', path, data, true, false, false);
-                    callback();
+                        ctx.save();
+                        ctx.clip(srcTriangle);
+                        ctx.drawImage(sourceImage, 0, 0);
+                        ctx.restore();
+                    }
                 } else {
-                    self.printError('Failed to load ' + url + ' status: ' + request.status);
+                    console.log("No landmarks detected.");
                 }
             }
-        };
-        request.send();
-    };
+        }
 
-
-    async function detectFaces() {
-      try {
-     // attendreDeuxSecondes();
-      console.log("detectfaces");
-      console.log(sourceImg);
-      const srcMat = cv.imread(sourceImg);
-      console.log(srcMat);
-      console.log(targetImg);
-      const tgtMat = cv.imread(targetImg);
-      console.log(tgtMat);
-      console.log("classifier");
-      //const faceCascade = new cv.CascadeClassifier();
-      console.log("load model");
-      let faceCascade = new cv.CascadeClassifier();
-
-        // Assurez-vous que le fichier est accessible
-        //const modelPath = 'haarcascade_frontalface_default.xml'; // Utilisez un chemin correct pour ce fichier
-        //var res=true;
-        //await faceCascade.load(modelPath); // Chargement du modèle
-
-        let faceCascadeFile = 'haarcascade_frontalface_default.xml'; // path to xml
-        createFileFromUrl(faceCascadeFile, faceCascadeFile, () => {
-          faceCascade.load(faceCascadeFile); // in the callback, load the cascade from file 
-        });
-        await attendreDeuxSecondes();
-      console.log("loaded model");
-      console.log(faceCascade);
-      const srcGray = new cv.Mat();
-      cv.cvtColor(srcMat, srcGray, cv.COLOR_RGBA2GRAY);
-      const tgtGray = new cv.Mat();
-      cv.cvtColor(tgtMat, tgtGray, cv.COLOR_RGBA2GRAY);
-      console.log("cvt color");
-      const srcFaces = new cv.RectVector();
-      const tgtFaces = new cv.RectVector();
-      console.log("init faces");
-      faceCascade.detectMultiScale(srcGray, srcFaces, 1.1, 3, 0);
-      faceCascade.detectMultiScale(tgtGray, tgtFaces, 1.1, 3, 0);
-      console.log("multiscale detected");
-      if (srcFaces.size() > 0 && tgtFaces.size() > 0) {
-        console.log("faces ok");
-        sourceFace = srcFaces.get(0);
-        targetFace = tgtFaces.get(0);
-        swapFaces(srcMat, tgtMat);
-      } else {
-        console.error("No faces detected in one or both images.");
-      }
-
-      srcMat.delete(); tgtMat.delete(); srcGray.delete(); tgtGray.delete();
-      srcFaces.delete(); tgtFaces.delete();
-
-    } catch (error) {
-    console.error("Erreur lors de l'exécution d'OpenCV:", error);
-}
-    }
-
-    function swapFaces(srcMat, tgtMat) {
-      console.log("faceswap");
-      const canvas = document.getElementById('canvas');
-      const ctx = canvas.getContext('2d');
-      canvas.width = targetImg.width;
-      canvas.height = targetImg.height;
-
-      const sourceRoi = srcMat.roi(sourceFace);
-      const targetRoi = tgtMat.roi(targetFace);
-
-      const srcPoints = nj.array([
-        [sourceFace.x, sourceFace.y],
-        [sourceFace.x + sourceFace.width, sourceFace.y],
-        [sourceFace.x, sourceFace.y + sourceFace.height]
-      ]);
-
-      const tgtPoints = nj.array([
-        [targetFace.x, targetFace.y],
-        [targetFace.x + targetFace.width, targetFace.y],
-        [targetFace.x, targetFace.y + targetFace.height]
-      ]);
-
-      const transformationMatrix = calculateAffineTransform(srcPoints, tgtPoints);
-
-      const warpMat = new cv.Mat();
-      cv.warpAffine(sourceRoi, targetRoi, transformationMatrix, targetRoi.size());
-
-      cv.imshow(canvas, tgtMat);
-
-      sourceRoi.delete(); targetRoi.delete(); warpMat.delete();
-    }
-
-    function calculateAffineTransform(srcPoints, tgtPoints) {
-      const srcMean = srcPoints.mean(0);
-      const tgtMean = tgtPoints.mean(0);
-      const centeredSrc = srcPoints.subtract(srcMean);
-      const centeredTgt = tgtPoints.subtract(tgtMean);
-      
-      // Create rotationMatrix for SVD
-      const rotationMatrix = nj.dot(centeredTgt.transpose(), centeredSrc).tolist();
-
-      // Perform Singular Value Decomposition using math.js
-      //const svd = math.svd(rotationMatrix);
-      const { U, V, q } = SVDJS.SVD(rotationMatrix)
-      //const U = svd.U; // U matrix from SVD
-      //const V = svd.V; // V matrix from SVD
-
-      const rotation = math.multiply(U, V);
-      const scale = math.norm(tgtPoints) / math.norm(srcPoints);
-      const translation = math.subtract(tgtMean, math.multiply(rotation, srcMean).map(x => x * scale));
-
-      // Construct affine transformation matrix
-      const affine = nj.concatenate([nj.array(rotation).multiply(scale), nj.array(translation).reshape(2, 1)], 1);
-      return cv.matFromArray(2, 3, cv.CV_64F, affine.flatten().tolist());
-    }
-
-    document.getElementById('but').addEventListener('click', detectFaces);
-  </script>
+        document.getElementById('sourceImageUpload').addEventListener('change', processImages);
+        document.getElementById('destinationImageUpload').addEventListener('change', processImages);
+    </script>
 </body>
 </html>
