@@ -31,8 +31,11 @@
     }
 
     async function detectFaces() {
+      console.log("detectfaces");
       const srcMat = cv.imread(sourceImg);
+      console.log(srcMat);
       const tgtMat = cv.imread(targetImg);
+      console.log(tgtMat);
       const faceCascade = new cv.CascadeClassifier();
       await faceCascade.load('haarcascade_frontalface_default.xml');
 
