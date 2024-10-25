@@ -8,7 +8,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/face-landmarks-detection"></script>
 </head>
 <body>
-  <h1>Face Swap Demo v0.60</h1>
+  <h1>Face Swap Demo v0.61</h1>
   
   <!-- Upload source and target images -->
   <input type="file" id="sourceImage" accept="image/*" onchange="loadImage(event, 'source')">
@@ -80,32 +80,34 @@
     }
 
     function swapFaces() {
-      const canvas = document.getElementById('canvas');
-      const ctx = canvas.getContext('2d');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
 
-      // Get first set of face landmarks for simplicity
-      const sourceFace = sourceFaceLandmarks[0];
-      const targetFace = targetFaceLandmarks[0];
+    // Dessiner l'image cible sur le canevas
+    ctx.drawImage(targetImg, 0, 0, canvas.width, canvas.height);
 
-      // Extract key points (eyes, nose) from landmarks for alignment
-      const sourceLeftEye = sourceFace.keypoints[33];
-      const sourceRightEye = sourceFace.keypoints[263];
-      const targetLeftEye = targetFace.keypoints[33];
-      const targetRightEye = targetFace.keypoints[263];
+    // Obtenez le premier ensemble de repères faciaux pour la source et la cible
+    const sourceFace = sourceFaceLandmarks[0];
+    const targetFace = targetFaceLandmarks[0];
 
-      // Calculate scale and rotation
-      const scale = calculateScale(sourceLeftEye, sourceRightEye, targetLeftEye, targetRightEye);
-      const angle = calculateRotation(sourceLeftEye, sourceRightEye, targetLeftEye, targetRightEye);
+    // Extraire les points clés (yeux, nez) pour l'alignement
+    const sourceLeftEye = sourceFace.keypoints[33];
+    const sourceRightEye = sourceFace.keypoints[263];
+    const targetLeftEye = targetFace.keypoints[33];
+    const targetRightEye = targetFace.keypoints[263];
 
-      // Apply transformations and draw swapped face
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.save();
-      ctx.translate(targetLeftEye.x, targetLeftEye.y);
-      ctx.rotate(angle);
-      ctx.scale(scale, scale);
-      ctx.drawImage(sourceImg, -sourceLeftEye.x, -sourceLeftEye.y);
-      ctx.restore();
-    }
+    // Calculer l'échelle et la rotation
+    const scale = calculateScale(sourceLeftEye, sourceRightEye, targetLeftEye, targetRightEye);
+    const angle = calculateRotation(sourceLeftEye, sourceRightEye, targetLeftEye, targetRightEye);
+
+    // Appliquer les transformations et dessiner le visage de la source sur l'image cible
+    ctx.save();
+    ctx.translate(targetLeftEye.x, targetLeftEye.y); // Positionner au niveau de l'œil gauche de la cible
+    ctx.rotate(angle); // Appliquer la rotation
+    ctx.scale(scale, scale); // Appliquer l'échelle
+    ctx.drawImage(sourceImg, -sourceLeftEye.x, -sourceLeftEye.y); // Dessiner l'image de la source
+    ctx.restore();
+}
 
     function calculateScale(sourceLeftEye, sourceRightEye, targetLeftEye, targetRightEye) {
       const sourceDist = Math.hypot(sourceRightEye.x - sourceLeftEye.x, sourceRightEye.y - sourceLeftEye.y);
