@@ -8,7 +8,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/numjs/0.16.0/numjs.min.js"></script>
 </head>
 <body>
-  <h1>Face Swap Demo v0.5</h1>
+  <h1>Face Swap Demo v0.6</h1>
   <input type="file" id="sourceImage" accept="image/*" onchange="loadImage(event, 'source')">
   <input type="file" id="targetImage" accept="image/*" onchange="loadImage(event, 'target')">
   <canvas id="canvas" width="500" height="500"></canvas>
@@ -47,8 +47,10 @@
 
     async function detectFaces() {
       console.log("detectfaces");
+      console.log(sourceImg);
       const srcMat = cv.imread(sourceImg);
       console.log(srcMat);
+      console.log(targetImg);
       const tgtMat = cv.imread(targetImg);
       console.log(tgtMat);
       const faceCascade = new cv.CascadeClassifier();
