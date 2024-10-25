@@ -5,10 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Face Swap with OpenCV.js and NumJS</title>
   <script src="https://docs.opencv.org/3.4/opencv.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/nicolaspanel/numjs@0.15.1/dist/numjs.min.js"></script>  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.0.0/math.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/numjs/0.17.0/numjs.min.js"></script>
+
 </head>
 <body>
-  <h1>Face Swap Demo v0.75</h1>
+  <h1>Face Swap Demo v0.76</h1>
   <input type="file" id="sourceImage" accept="image/*" onchange="loadImage(event, 'source')">
   <input type="file" id="targetImage" accept="image/*" onchange="loadImage(event, 'target')">
   <canvas id="canvas" width="500" height="500"></canvas>
@@ -170,15 +172,21 @@ createFileFromUrl = function(path, url, callback) {
       const tgtMean = tgtPoints.mean(0);
       const centeredSrc = srcPoints.subtract(srcMean);
       const centeredTgt = tgtPoints.subtract(tgtMean);
+      
+      // Create rotationMatrix for SVD
+      const rotationMatrix = nj.dot(centeredTgt.transpose(), centeredSrc).tolist();
 
-      const rotationMatrix = centeredTgt.transpose().dot(centeredSrc).tolist();
-      const [U, , V] = nj.linalg.svd(rotationMatrix);
+      // Perform Singular Value Decomposition using math.js
+      const svd = math.svd(rotationMatrix);
+      const U = svd.U; // U matrix from SVD
+      const V = svd.V; // V matrix from SVD
 
-      const rotation = nj.dot(U, V);
-      const scale = tgtPoints.norm() / srcPoints.norm();
-      const translation = tgtMean.subtract(nj.dot(rotation, srcMean).multiply(scale));
+      const rotation = math.multiply(U, V);
+      const scale = math.norm(tgtPoints) / math.norm(srcPoints);
+      const translation = math.subtract(tgtMean, math.multiply(rotation, srcMean).map(x => x * scale));
 
-      const affine = nj.concatenate([rotation.multiply(scale), translation.reshape(2, 1)], 1);
+      // Construct affine transformation matrix
+      const affine = nj.concatenate([nj.array(rotation).multiply(scale), nj.array(translation).reshape(2, 1)], 1);
       return cv.matFromArray(2, 3, cv.CV_64F, affine.flatten().tolist());
     }
 
