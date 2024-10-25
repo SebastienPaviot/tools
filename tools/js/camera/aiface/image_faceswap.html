@@ -73,7 +73,8 @@ async function attendreDeuxSecondes() {
       let faceCascade = new cv.CascadeClassifier();
 
         // Assurez-vous que le fichier est accessible
-        const modelPath = 'haarcascade_frontalface_default2.xml'; // Utilisez un chemin correct pour ce fichier
+        const modelPath = './haarcascade_frontalface_default.xml'; // Utilisez un chemin correct pour ce fichier
+        var res=true;
         await faceCascade.load(modelPath); // Chargement du modèle
 
       console.log("loaded model");
