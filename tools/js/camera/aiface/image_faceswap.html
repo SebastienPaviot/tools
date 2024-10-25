@@ -68,7 +68,7 @@ async function attendreDeuxSecondes() {
       console.log(tgtMat);
       const faceCascade = new cv.CascadeClassifier();
       await faceCascade.load('haarcascade_frontalface_default.xml');
-
+      console.log("loaded model");
       const srcGray = new cv.Mat();
       cv.cvtColor(srcMat, srcGray, cv.COLOR_RGBA2GRAY);
       const tgtGray = new cv.Mat();
@@ -80,6 +80,7 @@ async function attendreDeuxSecondes() {
       faceCascade.detectMultiScale(tgtGray, tgtFaces, 1.1, 3, 0);
 
       if (srcFaces.size() > 0 && tgtFaces.size() > 0) {
+        console.log("faces ok");
         sourceFace = srcFaces.get(0);
         targetFace = tgtFaces.get(0);
         swapFaces(srcMat, tgtMat);
@@ -92,6 +93,7 @@ async function attendreDeuxSecondes() {
     }
 
     function swapFaces(srcMat, tgtMat) {
+      console.log("faceswap");
       const canvas = document.getElementById('canvas');
       const ctx = canvas.getContext('2d');
       canvas.width = targetImg.width;
