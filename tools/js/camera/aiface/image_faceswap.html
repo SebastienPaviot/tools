@@ -23,7 +23,13 @@
     let model;
 
     async function loadModel() {
-      model = await faceLandmarksDetection.load(faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh); // Modèle spécifique ici
+     // model = await faceLandmarksDetection.load(faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh); // Modèle spécifique ici
+     const detectorConfig = {
+        runtime: 'tfjs',
+        solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh',
+      }
+      model = await faceLandmarksDetection.createDetector(faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh, detectorConfig);
+
     }
 
     function loadImage(event, type) {
