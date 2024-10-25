@@ -100,9 +100,9 @@ createFileFromUrl = function(path, url, callback) {
 
         let faceCascadeFile = 'haarcascade_frontalface_default.xml'; // path to xml
         createFileFromUrl(faceCascadeFile, faceCascadeFile, () => {
-          classifier.load(faceCascadeFile); // in the callback, load the cascade from file 
+          faceCascade.load(faceCascadeFile); // in the callback, load the cascade from file 
         });
-
+        attendreDeuxSecondes();
       console.log("loaded model");
       console.log(faceCascade);
       const srcGray = new cv.Mat();
