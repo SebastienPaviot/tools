@@ -7,9 +7,10 @@
   <script src="https://docs.opencv.org/3.4/opencv.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/nicolaspanel/numjs@0.15.1/dist/numjs.min.js"></script>  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.0.0/math.min.js"></script>
+  <script src="https://unpkg.com/svd-js" type="application/javascript"></script> 
 </head>
 <body>
-  <h1>Face Swap Demo v0.75</h1>
+  <h1>Face Swap Demo v0.76</h1>
   <input type="file" id="sourceImage" accept="image/*" onchange="loadImage(event, 'source')">
   <input type="file" id="targetImage" accept="image/*" onchange="loadImage(event, 'target')">
   <canvas id="canvas" width="500" height="500"></canvas>
@@ -176,9 +177,10 @@ createFileFromUrl = function(path, url, callback) {
       const rotationMatrix = nj.dot(centeredTgt.transpose(), centeredSrc).tolist();
 
       // Perform Singular Value Decomposition using math.js
-      const svd = math.svd(rotationMatrix);
-      const U = svd.U; // U matrix from SVD
-      const V = svd.V; // V matrix from SVD
+      //const svd = math.svd(rotationMatrix);
+      const { U, V, q } = SVDJS.SVD(rotationMatrix)
+      //const U = svd.U; // U matrix from SVD
+      //const V = svd.V; // V matrix from SVD
 
       const rotation = math.multiply(U, V);
       const scale = math.norm(tgtPoints) / math.norm(srcPoints);
