@@ -58,7 +58,8 @@ async function attendreDeuxSecondes() {
 }
 
     async function detectFaces() {
-      attendreDeuxSecondes();
+      try {
+     // attendreDeuxSecondes();
       console.log("detectfaces");
       console.log(sourceImg);
       const srcMat = cv.imread(sourceImg);
@@ -92,6 +93,10 @@ async function attendreDeuxSecondes() {
 
       srcMat.delete(); tgtMat.delete(); srcGray.delete(); tgtGray.delete();
       srcFaces.delete(); tgtFaces.delete();
+
+    } catch (error) {
+    console.error("Erreur lors de l'exécution d'OpenCV:", error);
+}
     }
 
     function swapFaces(srcMat, tgtMat) {
