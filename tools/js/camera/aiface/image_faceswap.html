@@ -70,8 +70,11 @@ async function attendreDeuxSecondes() {
       console.log("classifier");
       //const faceCascade = new cv.CascadeClassifier();
       console.log("load model");
-      //await faceCascade.load(cv.HAAR_FRONTALFACE_ALT2);
-      let faceCascade = new cv.CascadeClassifier(cv.HAAR_FRONTALFACE_ALT2);
+      let faceCascade = new cv.CascadeClassifier();
+
+        // Assurez-vous que le fichier est accessible
+        const modelPath = 'haarcascade_frontalface_default.xml'; // Utilisez un chemin correct pour ce fichier
+        await faceCascade.load(modelPath); // Chargement du modèle
 
       console.log("loaded model");
       const srcGray = new cv.Mat();
