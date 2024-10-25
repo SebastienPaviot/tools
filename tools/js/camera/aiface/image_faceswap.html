@@ -79,6 +79,7 @@ async function attendreDeuxSecondes() {
       console.log("cvt color");
       const srcFaces = new cv.RectVector();
       const tgtFaces = new cv.RectVector();
+      console.log("init faces");
       faceCascade.detectMultiScale(srcGray, srcFaces, 1.1, 3, 0);
       faceCascade.detectMultiScale(tgtGray, tgtFaces, 1.1, 3, 0);
       console.log("multiscale detected");
