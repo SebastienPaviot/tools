@@ -213,16 +213,7 @@ function initchat() {
   showPopup("initialisation");
   initializeWebLLMEngine().then(() => {
     document.getElementById("send").disabled = false;
-    const message = {
-      content: "describe yourself as a chatbot asssitant. 100 words",
-      role: "user",
-    };
-    streamingGenerating(
-      messages,
-      updateLastMessage,
-      onFinishGenerating,
-      console.error,
-    );
+   
   });
 }
 
