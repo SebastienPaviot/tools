@@ -4,6 +4,11 @@ html {
   padding: 10px 20px;
 }
 
+/* Centrer le titre */
+h1 {
+  text-align: center;
+}
+
 .download-container {
   display: flex;
   justify-content: space-between;
@@ -90,6 +95,7 @@ button {
   background-color: #007bff;
   color: white;
   cursor: pointer;
+  border-radius: 6px; 
 }
 
 button:disabled {
@@ -132,6 +138,7 @@ button:hover:not(:disabled) {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  border-radius: 6px; 
 }
 
 #close-popup:hover {
