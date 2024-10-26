@@ -33,7 +33,7 @@ function closePopup() {
 
 var messages = [
   {
-    content: "You are nice. Limit each response to 50 words or fewer.",
+    content: "You are an assistant. Limit each response to 50 words or fewer.",
     role: "system",
   },
 ];
@@ -119,7 +119,7 @@ function onMessageSend() {
     return;
   }
   document.getElementById("send").disabled = true;
-  messages = [];
+  //messages = [];
   messages.push(message);
   appendMessage(message);
 
