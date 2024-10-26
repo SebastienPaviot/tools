@@ -28,7 +28,7 @@ console.log("hellochat v0.8");
 const availableModels = webllm.prebuiltAppConfig.model_list.map(
   (m) => m.model_id,
 );
-console.log(availableModels);
+//console.log(availableModels);
 
 let selectedModel = "Llama-3.1-8B-Instruct-q4f32_1-1k";
 
