@@ -115,6 +115,7 @@ function onMessageSend() {
     content: input,
     role: "user",
   };
+  console.log(message);
   if (input.length === 0) {
     return;
   }
