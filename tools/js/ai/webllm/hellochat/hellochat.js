@@ -79,6 +79,9 @@ async function streamingGenerating(messages, onUpdate, onFinish, onError) {
     let usage;
     const completion = await engine.chat.completions.create({
       stream: true,
+      temperature: 0.6,
+      top_p: 0.9,
+      max_tokens: 75,
       messages,
       stream_options: { include_usage: true },
     });
