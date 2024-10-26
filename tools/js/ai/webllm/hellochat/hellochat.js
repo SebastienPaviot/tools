@@ -65,7 +65,7 @@ async function initializeWebLLMEngine() {
       top_p: 0.9,
       max_tokens: 2000,
       presence_penalty: 0.0, 
-      frequency_penalty: 0.0, // Limite de sortie correspondant à environ 50 mots
+      frequency_penalty: 0.0, 
   };
   console.log(config);
   await engine.reload(selectedModel, config);
