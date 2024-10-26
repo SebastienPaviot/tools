@@ -6,7 +6,7 @@ sessionStorage.clear();
 if ('caches' in window) {
   caches.keys().then(cacheNames => {
     cacheNames.forEach(cacheName => {
-      caches.delete(cacheName);
+      //caches.delete(cacheName);
     });
   });
 }
@@ -110,7 +110,12 @@ function onMessageSend() {
     return;
   }
   document.getElementById("send").disabled = true;
-
+  messages = [
+    {
+      content: "You are nice. Limit each response to 50 words or fewer.",
+      role: "system",
+    },
+  ];
   messages.push(message);
   appendMessage(message);
 
