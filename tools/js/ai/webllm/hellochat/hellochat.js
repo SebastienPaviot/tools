@@ -8,6 +8,26 @@ console.log(availableModels);
 
 let selectedModel = "Llama-3.1-8B-Instruct-q4f32_1-1k";
 
+// Callback function for initializing progress
+function updateEngineInitProgressCallback(report) {
+  console.log("initialize", report.progress);
+  document.getElementById("download-status").textContent = report.text;
+}
+
+// Create engine instance
+const engine = new webllm.MLCEngine();
+engine.setInitProgressCallback(updateEngineInitProgressCallback);
+
+async function initializeWebLLMEngine() {
+  document.getElementById("download-status").classList.remove("hidden");
+  selectedModel = document.getElementById("model-selection").value;
+  const config = {
+    temperature: 1.0,
+    top_p: 1,
+  };
+  await engine.reload(selectedModel, config);
+}
+
 
 /*************** UI binding ***************/
 availableModels.forEach((modelId) => {
