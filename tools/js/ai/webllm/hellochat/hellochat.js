@@ -158,7 +158,7 @@ function appendMessage(message) {
   container.classList.add("message-container");
   const newMessage = document.createElement("div");
   newMessage.classList.add("message");
-  newMessage.textContent = message.content;
+  newMessage.innerHTML = message.content;
 
   if (message.role === "user") {
     container.classList.add("user");
