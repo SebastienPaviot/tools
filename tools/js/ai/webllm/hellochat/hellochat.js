@@ -66,6 +66,7 @@ async function initializeWebLLMEngine() {
   };
   console.log(config);
   await engine.reload(selectedModel, config);
+  await calculateCacheStorageSize();
 
 
 }
@@ -203,4 +204,30 @@ function initchat() {
 }
 
 setTimeout(initchat, 2000);
+
+async function calculateCacheStorageSize() {
+  let totalSize = 0;
+
+  const cacheNames = await caches.keys();
+
+  for (const cacheName of cacheNames) {
+    const cache = await caches.open(cacheName);
+    const requests = await cache.keys();
+
+    for (const request of requests) {
+      const response = await cache.match(request);
+
+      if (response) {
+        const clonedResponse = response.clone();
+        const body = await clonedResponse.arrayBuffer();
+        totalSize += body.byteLength; // Taille en octets
+      }
+    }
+  }
+
+  console.log(`Cache Storage Size: ${(totalSize / 1024 / 1024).toFixed(2)} MB`);
+  return totalSize;
+}
+
+
 
