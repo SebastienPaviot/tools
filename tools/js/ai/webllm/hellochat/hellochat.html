@@ -14,8 +14,12 @@
       <select id="model-selection"></select>
       <button id="download">Download</button>
     </div>
-    <p id="download-status" class="hidden"></p>
-
+    <div id="download-popup" class="popup hidden">
+      <div class="popup-content">
+        <p id="download-status">Download in progress...</p>
+        <button id="close-popup">Close</button>
+      </div>
+    </div>
     <p>Step 2: Chat</p>
     <div class="chat-container">
       <div id="chat-box" class="chat-box"></div>
