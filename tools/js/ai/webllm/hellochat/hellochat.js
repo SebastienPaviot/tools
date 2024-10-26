@@ -81,7 +81,7 @@ async function streamingGenerating(messages, onUpdate, onFinish, onError) {
       stream: true,
       temperature: 0.6,
       top_p: 0.9,
-      max_tokens: 200,
+      max_tokens: 2000,
       presence_penalty: 0.0, 
       frequency_penalty: 0.0,
       messages,
