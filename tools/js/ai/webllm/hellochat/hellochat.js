@@ -32,7 +32,7 @@ closePopupBtn.addEventListener('click', closePopup);
 
 const messages = [
   {
-    content: "You are a helpful AI agent helping users. Limit each response to 50 words or fewer.",
+    content: "You are nice. Limit each response to 50 words or fewer.",
     role: "system",
   },
 ];
@@ -43,7 +43,7 @@ const availableModels = webllm.prebuiltAppConfig.model_list.map(
 );
 //console.log(availableModels);
 
-let selectedModel = "TinyLlama-1.1B-Chat-v1.0-q4f16_1-MLC";
+let selectedModel = "Mistral-7B-Instruct-v0.3-q4f32_1-MLC";
 
 // Callback function for initializing progress
 function updateEngineInitProgressCallback(report) {
