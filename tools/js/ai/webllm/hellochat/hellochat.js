@@ -122,6 +122,7 @@ function onMessageSend() {
   appendMessage(aiMessage);
 
   const onFinishGenerating = (finalMessage, usage) => {
+    console.log("onFinishGenerating:"+finalMessage);
     updateLastMessage(finalMessage);
     document.getElementById("send").disabled = false;
     const usageText =
