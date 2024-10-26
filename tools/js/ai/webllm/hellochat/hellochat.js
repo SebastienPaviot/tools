@@ -5,7 +5,7 @@ const closePopupBtn = document.getElementById('close-popup');
 
 // Fonction pour ouvrir la popup
 function showPopup(message) {
-  downloadStatus.textContent = message;
+  document.getElementById("download-status").textContent = message;
   downloadPopup.classList.remove('hidden');
 }
 
