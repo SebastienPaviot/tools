@@ -44,7 +44,7 @@ const availableModels = webllm.prebuiltAppConfig.model_list.map(
 );
 //console.log(availableModels);
 
-let selectedModel = "Mistral-7B-Instruct-v0.3-q4f32_1-MLC";
+let selectedModel = "TinyLlama-1.1B-Chat-v1.0-q4f32_1-MLC";
 
 // Callback function for initializing progress
 function updateEngineInitProgressCallback(report) {
