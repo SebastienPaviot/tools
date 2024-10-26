@@ -176,7 +176,7 @@ function updateLastMessage(content) {
     .getElementById("chat-box")
     .querySelectorAll(".message");
   const lastMessageDom = messageDoms[messageDoms.length - 1];
-  lastMessageDom.innerHTML = content;
+  lastMessageDom.innerHTML = content.replace(/\n/g, '<br>');
 }
 
 
