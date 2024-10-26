@@ -120,7 +120,7 @@ function onMessageSend() {
     return;
   }
   document.getElementById("send").disabled = true;
-  //messages = [];
+  messages = [];
   messages.push(message);
   appendMessage(message);
 
