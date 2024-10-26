@@ -76,7 +76,7 @@ async function initializeWebLLMEngine() {
 }
 
 async function streamingGenerating(messages, onUpdate, onFinish, onError) {
-  console.log("streamingGenerating:"+messages);
+  console.log(messages);
   try {
     let curMessage = "";
     let usage;
