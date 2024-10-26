@@ -61,8 +61,8 @@ async function initializeWebLLMEngine() {
   //selectedModel = document.getElementById("model-selection").value;
   console.log(selectedModel);
   const config = {
-    temperature: 1.0,
-    top_p: 1,
+    temperature: 0.5,
+    top_p: 0.5,
     max_tokens: 75, // Limite de sortie correspondant à environ 50 mots
   };
   console.log(config);
