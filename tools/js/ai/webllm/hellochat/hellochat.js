@@ -3,6 +3,17 @@ import * as webllm from "https://esm.run/@mlc-ai/web-llm";
 const downloadPopup = document.getElementById('download-popup');
 const closePopupBtn = document.getElementById('close-popup');
 
+// Fonction pour ouvrir la popup
+function showPopup(message) {
+  downloadStatus.textContent = message;
+  downloadPopup.classList.remove('hidden');
+}
+
+// Fonction pour fermer la popup
+function closePopup() {
+  downloadPopup.classList.add('hidden');
+}
+
 const messages = [
   {
     content: "You are a helpful AI agent helping users.",
@@ -149,6 +160,7 @@ availableModels.forEach((modelId) => {
 });
 document.getElementById("model-selection").value = selectedModel;
 document.getElementById("download").addEventListener("click", function () {
+  showPopup("initialisation);
   initializeWebLLMEngine().then(() => {
     document.getElementById("send").disabled = false;
   });
