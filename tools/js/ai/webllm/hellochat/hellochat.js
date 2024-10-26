@@ -171,3 +171,14 @@ document.getElementById("download").addEventListener("click", function () {
 document.getElementById("send").addEventListener("click", function () {
   onMessageSend();
 });
+
+function initchat() {
+  console.log("initchat");
+  showPopup("initialisation");
+  initializeWebLLMEngine().then(() => {
+    document.getElementById("send").disabled = false;
+  });
+}
+
+setTimeout(initchat, 5000);
+
