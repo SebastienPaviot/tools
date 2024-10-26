@@ -15,7 +15,7 @@ await calculateCacheStorageSize();
 console.log("cache deleted");
 
 const downloadPopup = document.getElementById('download-popup');
-const closePopupBtn = document.getElementById('close-popup');
+//const closePopupBtn = document.getElementById('close-popup');
 
 // Fonction pour ouvrir la popup
 function showPopup(message) {
@@ -28,7 +28,7 @@ function closePopup() {
   downloadPopup.classList.add('hidden');
 }
 
-closePopupBtn.addEventListener('click', closePopup);
+//closePopupBtn.addEventListener('click', closePopup);
 
 
 var messages = [
@@ -68,6 +68,7 @@ async function initializeWebLLMEngine() {
   console.log(config);
   await engine.reload(selectedModel, config);
   await calculateCacheStorageSize();
+  closePopup();
 
 
 }
