@@ -14,6 +14,9 @@ function closePopup() {
   downloadPopup.classList.add('hidden');
 }
 
+closePopupBtn.addEventListener('click', closePopup);
+
+
 const messages = [
   {
     content: "You are a helpful AI agent helping users.",
