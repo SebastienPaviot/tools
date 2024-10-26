@@ -1,6 +1,6 @@
 import * as webllm from "https://esm.run/@mlc-ai/web-llm";
 
-console.log("hellochat v0.1");
+console.log("hellochat v0.8");
 const availableModels = webllm.prebuiltAppConfig.model_list.map(
   (m) => m.model_id,
 );
