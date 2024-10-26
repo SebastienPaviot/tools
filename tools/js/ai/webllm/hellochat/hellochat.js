@@ -31,7 +31,7 @@ function closePopup() {
 closePopupBtn.addEventListener('click', closePopup);
 
 
-const messages = [
+var messages = [
   {
     content: "You are nice. Limit each response to 50 words or fewer.",
     role: "system",
