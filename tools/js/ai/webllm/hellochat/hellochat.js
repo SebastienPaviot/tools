@@ -83,6 +83,7 @@ async function streamingGenerating(messages, onUpdate, onFinish, onError) {
       top_p: 0.9,
       max_tokens: 200,
       presence_penalty: 0.0, 
+      frequency_penalty: 0.0,
       messages,
       stream_options: { include_usage: true },
     });
