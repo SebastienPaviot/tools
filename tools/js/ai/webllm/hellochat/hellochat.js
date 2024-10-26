@@ -160,7 +160,7 @@ availableModels.forEach((modelId) => {
 });
 document.getElementById("model-selection").value = selectedModel;
 document.getElementById("download").addEventListener("click", function () {
-  showPopup("initialisation);
+  showPopup("initialisation");
   initializeWebLLMEngine().then(() => {
     document.getElementById("send").disabled = false;
   });
