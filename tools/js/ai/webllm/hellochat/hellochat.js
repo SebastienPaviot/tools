@@ -71,6 +71,17 @@ async function initializeWebLLMEngine() {
   await engine.reload(selectedModel, config);
   await calculateCacheStorageSize();
   closePopup();
+  
+  const message = {
+    content: "describe yourself as a chatbot asssitant. 100 words",
+    role: "user",
+  };
+  streamingGenerating(
+    messages,
+    updateLastMessage,
+    onFinishGenerating,
+    console.error,
+  );
 
 
 }
