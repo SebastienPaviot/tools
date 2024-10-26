@@ -45,7 +45,7 @@ engine.setInitProgressCallback(updateEngineInitProgressCallback);
 async function initializeWebLLMEngine() {
   document.getElementById("download-status").classList.remove("hidden");
   //selectedModel = document.getElementById("model-selection").value;
-  console.log(selectedmodel);
+  console.log(selectedModel);
   const config = {
     temperature: 1.0,
     top_p: 1,
