@@ -1,6 +1,6 @@
 import * as webllm from "https://esm.run/@mlc-ai/web-llm";
 
-
+await calculateCacheStorageSize();
 localStorage.clear();
 sessionStorage.clear();
 if ('caches' in window) {
@@ -10,6 +10,7 @@ if ('caches' in window) {
     });
   });
 }
+await calculateCacheStorageSize();
 
 console.log("cache deleted");
 
