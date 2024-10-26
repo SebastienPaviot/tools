@@ -185,5 +185,5 @@ function initchat() {
   });
 }
 
-setTimeout(initchat, 5000);
+setTimeout(initchat, 2000);
 
