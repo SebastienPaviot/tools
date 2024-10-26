@@ -43,7 +43,7 @@ const availableModels = webllm.prebuiltAppConfig.model_list.map(
 );
 //console.log(availableModels);
 
-let selectedModel = "Phi-3.5-mini-instruct-q4f32_1-MLC";
+let selectedModel = "RedPajama-INCITE-Chat-3B-v1-q4f32_1-MLC-1k";
 
 // Callback function for initializing progress
 function updateEngineInitProgressCallback(report) {
