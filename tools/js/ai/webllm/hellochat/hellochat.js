@@ -32,7 +32,7 @@ closePopupBtn.addEventListener('click', closePopup);
 
 const messages = [
   {
-    content: "You are a helpful AI agent helping users.",
+    content: "You are a helpful AI agent helping users. Limit each response to 50 words or fewer.",
     role: "system",
   },
 ];
@@ -61,8 +61,10 @@ async function initializeWebLLMEngine() {
   console.log(selectedModel);
   const config = {
     temperature: 1.0,
-    top_p: 0.4,
+    top_p: 1,
+    max_tokens: 75, // Limite de sortie correspondant à environ 50 mots
   };
+  console.log(config);
   await engine.reload(selectedModel, config);
 
 
