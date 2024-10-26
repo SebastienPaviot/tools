@@ -1,5 +1,8 @@
 import * as webllm from "https://esm.run/@mlc-ai/web-llm";
 
+const downloadPopup = document.getElementById('download-popup');
+const closePopupBtn = document.getElementById('close-popup');
+
 const messages = [
   {
     content: "You are a helpful AI agent helping users.",
