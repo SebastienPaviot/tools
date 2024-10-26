@@ -1,5 +1,18 @@
 import * as webllm from "https://esm.run/@mlc-ai/web-llm";
 
+
+localStorage.clear();
+sessionStorage.clear();
+if ('caches' in window) {
+  caches.keys().then(cacheNames => {
+    cacheNames.forEach(cacheName => {
+      caches.delete(cacheName);
+    });
+  });
+}
+
+console.log("cache deleted");
+
 const downloadPopup = document.getElementById('download-popup');
 const closePopupBtn = document.getElementById('close-popup');
 
