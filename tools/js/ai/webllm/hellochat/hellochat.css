@@ -15,7 +15,7 @@ h1 {
 
 /* Chat container et chat box */
 .chat-container {
-  height: calc(100vh - 120px);
+  height: calc(100vh - 160px);
   width: 100%;
   border: 2px solid #2c3e50; /* Bleu foncé */
   background-color: #ffffff; /* Fond blanc pour le contraste */
