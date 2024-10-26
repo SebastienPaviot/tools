@@ -47,7 +47,7 @@ let selectedModel = "RedPajama-INCITE-Chat-3B-v1-q4f32_1-MLC-1k";
 
 // Callback function for initializing progress
 function updateEngineInitProgressCallback(report) {
-  console.log("initialize", report.progress);
+  //console.log("initialize", report.progress);
   document.getElementById("download-status").textContent = report.text;
 }
 
