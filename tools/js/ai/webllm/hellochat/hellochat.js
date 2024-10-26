@@ -157,10 +157,12 @@ function updateLastMessage(content) {
 
 /*************** UI binding ***************/
 availableModels.forEach((modelId) => {
+  /*
   const option = document.createElement("option");
   option.value = modelId;
   option.textContent = modelId;
   document.getElementById("model-selection").appendChild(option);
+  */
 });
 document.getElementById("model-selection").value = selectedModel;
 document.getElementById("download").addEventListener("click", function () {
