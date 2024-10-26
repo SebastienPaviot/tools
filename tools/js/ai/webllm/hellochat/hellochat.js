@@ -61,8 +61,8 @@ async function initializeWebLLMEngine() {
   //selectedModel = document.getElementById("model-selection").value;
   console.log(selectedModel);
   const config = {
-    temperature: 0.5,
-    top_p: 0.5,
+    temperature: 0.6,
+    top_p: 0.9,
     max_tokens: 75, // Limite de sortie correspondant à environ 50 mots
   };
   console.log(config);
@@ -110,12 +110,7 @@ function onMessageSend() {
     return;
   }
   document.getElementById("send").disabled = true;
-  messages = [
-    {
-      content: "You are nice. Limit each response to 50 words or fewer.",
-      role: "system",
-    },
-  ];
+  messages = [];
   messages.push(message);
   appendMessage(message);
 
