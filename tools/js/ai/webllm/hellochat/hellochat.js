@@ -115,7 +115,7 @@ function onMessageSend() {
       `completion_tokens: ${usage.completion_tokens}, ` +
       `prefill: ${usage.extra.prefill_tokens_per_s.toFixed(4)} tokens/sec, ` +
       `decoding: ${usage.extra.decode_tokens_per_s.toFixed(4)} tokens/sec`;
-    document.getElementById("chat-stats").classList.remove("hidden");
+    //document.getElementById("chat-stats").classList.remove("hidden");
     document.getElementById("chat-stats").textContent = usageText;
   };
 
