@@ -1,5 +1,12 @@
 import * as webllm from "https://esm.run/@mlc-ai/web-llm";
 
+const messages = [
+  {
+    content: "You are a helpful AI agent helping users.",
+    role: "system",
+  },
+];
+
 console.log("hellochat v0.8");
 const availableModels = webllm.prebuiltAppConfig.model_list.map(
   (m) => m.model_id,
