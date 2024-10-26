@@ -83,8 +83,8 @@ async function streamingGenerating(messages, onUpdate, onFinish, onError) {
       temperature: 0.6,
       top_p: 0.9,
       max_tokens: 2000,
-      presence_penalty: 0.0, 
-      frequency_penalty: 0.0,
+     // presence_penalty: 0.0, 
+     // frequency_penalty: 0.0,
       messages,
       stream_options: { include_usage: true },
     });
