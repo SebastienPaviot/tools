@@ -164,13 +164,15 @@ availableModels.forEach((modelId) => {
   document.getElementById("model-selection").appendChild(option);
   */
 });
-document.getElementById("model-selection").value = selectedModel;
+//document.getElementById("model-selection").value = selectedModel;
+/*
 document.getElementById("download").addEventListener("click", function () {
   showPopup("initialisation");
   initializeWebLLMEngine().then(() => {
     document.getElementById("send").disabled = false;
   });
 });
+*/
 document.getElementById("send").addEventListener("click", function () {
   onMessageSend();
 });
