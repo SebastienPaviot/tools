@@ -1,6 +1,6 @@
 import { HfInference } from "https://esm.sh/@huggingface/inference"
 
-//const hf = new HfInference('your access token')
+const hf = new HfInference();
 
 
 
