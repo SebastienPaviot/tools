@@ -18,7 +18,7 @@ export function divlog(message) {
 
 // Exemple d'appel de la fonction divlog
 divlog("Bienvenue sur JS Chat !");
-divlog("v0.2");
+divlog("v0.3");
 divlog("Ce message est généré par la fonction divlog.");
 
 
