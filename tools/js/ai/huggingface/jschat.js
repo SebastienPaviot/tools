@@ -1,4 +1,7 @@
-// Fonction divlog pour afficher un message dans la div "log"
+import { HfInference } from "https://esm.sh/@huggingface/inference"
+
+
+
 export function divlog(message) {
   // Sélection de la div où afficher le message
   const logDiv = document.getElementById("log");
@@ -13,4 +16,5 @@ export function divlog(message) {
 
 // Exemple d'appel de la fonction divlog
 divlog("Bienvenue sur JS Chat !");
+divlog("v0.2");
 divlog("Ce message est généré par la fonction divlog.");
