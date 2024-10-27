@@ -79,7 +79,7 @@ console.log(output2);
 
 
 // using pipeline function
-pipe = await pipeline('text-generation', 'nvidia/Llama-3.1-Nemotron-70B-Instruct-HF', {model_file_name: 'decoder_model_merged'})
+pipe = await pipeline('text-generation', 'nvidia/Llama-3.1-Nemotron-70B-Instruct-HF');
 // using AutoModel class
 //let model = await AutoModel.from_pretrained('Xenova/Qwen1.5-0.5B-Chat', {model_file_name:'decoder_model_merged'})
 // will fetch decoder_model_merged_quantized.onnx
