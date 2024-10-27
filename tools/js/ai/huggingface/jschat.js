@@ -24,7 +24,7 @@ export function divlog(message) {
 
 // Exemple d'appel de la fonction divlog
 divlog("Bienvenue sur JS Chat !");
-divlog("v0.39");
+divlog("v0.391");
 divlog("Ce message est généré par la fonction divlog.");
 
 /*
@@ -60,7 +60,7 @@ let model = await AutoModel.from_pretrained('Xenova/Qwen1.5-0.5B-Chat', {model_f
 
 
 // Create a text-generation pipeline
-const generator = await pipeline('text-generation');
+const generator = pipe;
 
 // Generate text (default parameters)
 const text = 'Once upon a time,';
