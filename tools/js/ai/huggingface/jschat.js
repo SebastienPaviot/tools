@@ -1,5 +1,11 @@
 import { HfInference } from "https://esm.sh/@huggingface/inference"
 
+
+import { pipeline } from '@huggingface/transformers';
+
+
+
+
 const hf = new HfInference();
 
 
@@ -21,7 +27,7 @@ divlog("Bienvenue sur JS Chat !");
 divlog("v0.3");
 divlog("Ce message est généré par la fonction divlog.");
 
-
+/*
 await hf.textGeneration({
   model: 'gpt2',
   inputs: 'The answer to the universe is'
@@ -35,3 +41,11 @@ for await (const output of hf.textGenerationStream({
   console.log(output.token.text, output.generated_text);
   divlog(output.generated_text);
 }
+*/
+
+// Allocate a pipeline for sentiment-analysis
+const pipe = await pipeline('sentiment-analysis');
+
+const out = await pipe('I love transformers!');
+// [{'label': 'POSITIVE', 'score': 0.999817686}]
+divlog(out);
