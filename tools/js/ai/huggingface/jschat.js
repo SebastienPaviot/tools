@@ -51,9 +51,19 @@ const out = await pipe('I love transformers!');
 console.log(out);
 divlog(out);
 
+// Create a text-generation pipeline
+const generator = await pipeline('text-generation', 'Xenova/gpt2');
 
-const generator = await pipeline('text-generation', 'Xenova/distilgpt2');
-const text = 'I enjoy walking with my cute dog,';
+// Generate text (default parameters)
+const text = 'Once upon a time,';
 const output = await generator(text);
-// [{ generated_text: "I enjoy walking with my cute dog, and I love to play with the other dogs." }]
 console.log(output);
+// [{ generated_text: 'Once upon a time, I was in a room with a woman who was very attractive. She was' }]
+
+// Generate text (custom parameters)
+const output2 = await generator(text, {
+    max_new_tokens: 20,
+    do_sample: true,
+    top_k: 5,
+});
+console.log(output2);
