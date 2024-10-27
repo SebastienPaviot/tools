@@ -24,7 +24,7 @@ export function divlog(message) {
 
 // Exemple d'appel de la fonction divlog
 divlog("Bienvenue sur JS Chat !");
-divlog("v0.391");
+divlog("v0.395");
 divlog("Ce message est généré par la fonction divlog.");
 
 /*
@@ -44,7 +44,7 @@ for await (const output of hf.textGenerationStream({
 */
 
 // Allocate a pipeline for sentiment-analysis
-const pipe = await pipeline('sentiment-analysis');
+var pipe = await pipeline('sentiment-analysis');
 
 const out = await pipe('I love transformers!');
 // [{'label': 'POSITIVE', 'score': 0.999817686}]
