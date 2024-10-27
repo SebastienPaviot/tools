@@ -24,7 +24,7 @@ export function divlog(message) {
 
 // Exemple d'appel de la fonction divlog
 divlog("Bienvenue sur JS Chat !");
-divlog("v0.395");
+divlog("v0.4");
 divlog("Ce message est généré par la fonction divlog.");
 
 /*
@@ -63,13 +63,39 @@ pipe = await pipeline('text-generation', 'Xenova/Qwen1.5-0.5B-Chat', {model_file
 const generator = pipe;
 
 // Generate text (default parameters)
-const text = 'What is the capital of France?';
-const output = await generator(text);
+var text = 'What is the capital of France?';
+var  output = await generator(text);
 console.log(output);
 // [{ generated_text: 'Once upon a time, I was in a room with a woman who was very attractive. She was' }]
 
 // Generate text (custom parameters)
-const output2 = await generator(text, {
+var output2 = await generator(text, {
+    max_new_tokens: 20,
+    do_sample: true,
+    top_k: 5,
+});
+console.log(output2);
+
+
+
+// using pipeline function
+pipe = await pipeline('text-generation', 'nvidia/Llama-3.1-Nemotron-70B-Instruct-HF', {model_file_name: 'decoder_model_merged'})
+// using AutoModel class
+//let model = await AutoModel.from_pretrained('Xenova/Qwen1.5-0.5B-Chat', {model_file_name:'decoder_model_merged'})
+// will fetch decoder_model_merged_quantized.onnx
+
+
+// Create a text-generation pipeline
+generator = pipe;
+
+// Generate text (default parameters)
+text = 'What is the capital of France?';
+output = await generator(text);
+console.log(output);
+// [{ generated_text: 'Once upon a time, I was in a room with a woman who was very attractive. She was' }]
+
+// Generate text (custom parameters)
+output2 = await generator(text, {
     max_new_tokens: 20,
     do_sample: true,
     top_k: 5,
