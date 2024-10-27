@@ -52,7 +52,7 @@ console.log(out);
 divlog(out);
 
 // Create a text-generation pipeline
-const generator = await pipeline('text-generation', 'Xenova/gpt2');
+const generator = await pipeline('text-generation');
 
 // Generate text (default parameters)
 const text = 'Once upon a time,';
