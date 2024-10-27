@@ -50,3 +50,10 @@ const out = await pipe('I love transformers!');
 // [{'label': 'POSITIVE', 'score': 0.999817686}]
 console.log(out);
 divlog(out);
+
+
+const generator = await pipeline('text-generation', 'Xenova/distilgpt2');
+const text = 'I enjoy walking with my cute dog,';
+const output = await generator(text);
+// [{ generated_text: "I enjoy walking with my cute dog, and I love to play with the other dogs." }]
+console.log(output);
