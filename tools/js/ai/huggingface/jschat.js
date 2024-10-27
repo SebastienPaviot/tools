@@ -24,7 +24,7 @@ export function divlog(message) {
 
 // Exemple d'appel de la fonction divlog
 divlog("Bienvenue sur JS Chat !");
-divlog("v0.38");
+divlog("v0.39");
 divlog("Ce message est généré par la fonction divlog.");
 
 /*
@@ -53,7 +53,7 @@ divlog(out);
 
 
 // using pipeline function
-let pipe = await pipeline('text-generation', 'Xenova/Qwen1.5-0.5B-Chat', {model_file_name: 'decoder_model_merged'})
+pipe = await pipeline('text-generation', 'Xenova/Qwen1.5-0.5B-Chat', {model_file_name: 'decoder_model_merged'})
 // using AutoModel class
 let model = await AutoModel.from_pretrained('Xenova/Qwen1.5-0.5B-Chat', {model_file_name:'decoder_model_merged'})
 // will fetch decoder_model_merged_quantized.onnx
