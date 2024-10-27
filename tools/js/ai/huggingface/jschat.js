@@ -20,3 +20,17 @@ export function divlog(message) {
 divlog("Bienvenue sur JS Chat !");
 divlog("v0.2");
 divlog("Ce message est généré par la fonction divlog.");
+
+
+await hf.textGeneration({
+  model: 'gpt2',
+  inputs: 'The answer to the universe is'
+})
+
+for await (const output of hf.textGenerationStream({
+  model: "google/flan-t5-xxl",
+  inputs: 'repeat "one two three four"',
+  parameters: { max_new_tokens: 250 }
+})) {
+  console.log(output.token.text, output.generated_text);
+}
