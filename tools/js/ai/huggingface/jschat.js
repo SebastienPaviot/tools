@@ -51,6 +51,14 @@ const out = await pipe('I love transformers!');
 console.log(out);
 divlog(out);
 
+
+// using pipeline function
+let pipe = await pipeline('text-generation', 'Xenova/Qwen1.5-0.5B-Chat', {model_file_name: 'decoder_model_merged'})
+// using AutoModel class
+let model = await AutoModel.from_pretrained('Xenova/Qwen1.5-0.5B-Chat', {model_file_name:'decoder_model_merged'})
+// will fetch decoder_model_merged_quantized.onnx
+
+
 // Create a text-generation pipeline
 const generator = await pipeline('text-generation');
 
