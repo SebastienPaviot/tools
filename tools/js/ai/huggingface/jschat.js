@@ -63,7 +63,7 @@ pipe = await pipeline('text-generation', 'Xenova/Qwen1.5-0.5B-Chat', {model_file
 const generator = pipe;
 
 // Generate text (default parameters)
-const text = 'Once upon a time,';
+const text = 'What is the capital of France?';
 const output = await generator(text);
 console.log(output);
 // [{ generated_text: 'Once upon a time, I was in a room with a woman who was very attractive. She was' }]
