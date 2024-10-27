@@ -33,4 +33,5 @@ for await (const output of hf.textGenerationStream({
   parameters: { max_new_tokens: 250 }
 })) {
   console.log(output.token.text, output.generated_text);
+  divlog(output.generated_text);
 }
