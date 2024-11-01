@@ -1,4 +1,5 @@
-import { pipeline } from "@huggingface/transformers";
+import { pipeline } from "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.0.0";
+
 
 // Create a text generation pipeline
 const generator = await pipeline(
