@@ -38,7 +38,7 @@ async function transform() {
     try {
         // Génère la réponse
         const output = await generator(messages, { max_new_tokens: 128 });
-        const generatedContent = output[0].generated_text; // Accède directement au texte généré
+        const generatedContent = output[0].generated_text.at(-1).content; // Accède directement au texte généré
 
         // Affiche le message généré dans la div "result"
         document.getElementById("result").textContent = generatedContent;
