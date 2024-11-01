@@ -4,11 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transformers Hugging Face</title>
+    <style>
+        /* Pour aligner l'input et le bouton */
+        .input-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
 </head>
 <body>
     <h1>Transformers Hugging Face</h1>
     
-    <p id="message"></p>
+    <div class="input-container">
+        <input type="text" id="userInput" placeholder="Écrivez une phrase ici" />
+        <button onclick="transform()">Submit</button>
+    </div>
+    
+    <div id="result" style="margin-top: 20px;"></div>
 
     <!-- Appel du module main.js -->
     <script type="module" src="main.js"></script>
