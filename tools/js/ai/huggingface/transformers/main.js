@@ -11,17 +11,16 @@ const generator = await pipeline(
 const defaultMessages = [
   { role: "system", content: "You are a helpful assistant." }
 ];
-
-// Fonction transform asynchrone
-export async function transform() {
+// Fonction asynchrone transform
+async function transform() {
     // Récupère la valeur entrée par l'utilisateur
     const userInput = document.getElementById("userInput").value;
     
-    // Ajoute le message de l'utilisateur aux messages pour la génération
+    // Ajoute le message de l'utilisateur
     const messages = [...defaultMessages, { role: "user", content: userInput }];
 
-    // Génère une réponse
     try {
+        // Génère la réponse
         const output = await generator(messages, { max_new_tokens: 128 });
         const generatedContent = output[0].generated_text.at(-1).content;
 
@@ -32,3 +31,6 @@ export async function transform() {
         document.getElementById("result").textContent = "Erreur lors de la génération de texte.";
     }
 }
+
+// Rend la fonction transform accessible globalement
+window.transform = transform;
