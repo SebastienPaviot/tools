@@ -72,17 +72,36 @@
             height: calc(1.2em * 5); /* Calcul pour 5 lignes, chaque ligne étant de 1.2em */
             overflow-y: auto; /* Ajout d'un défilement vertical si le contenu dépasse 5 lignes */
         }
+
+        /* Styles pour la modale */
+        #loadingModal {
+            display: none; /* Masquée par défaut */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+            color: white;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            z-index: 1000; /* Au-dessus des autres éléments */
+        }
     </style>
 </head>
 <body>
     <h1>Transformers Hugging Face</h1>
     
     <div class="input-container">
-        <input type="text" id="userInput" placeholder="Ask anything" />
+        <input type="text" id="userInput" placeholder="Écrivez une phrase ici" />
         <button onclick="transform()">Submit</button>
     </div>
     
     <div id="result"></div>
+
+    <!-- Modale de chargement -->
+    <div id="loadingModal">Chargement en cours...</div>
 
 </body>
 </html>
