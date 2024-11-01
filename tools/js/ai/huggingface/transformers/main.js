@@ -26,6 +26,8 @@ async function transform() {
 
         // Affiche le message généré dans la div "result"
         document.getElementById("result").textContent = generatedContent;
+      // Vide le champ de saisie
+        userInput.value = "";
     } catch (error) {
         console.error("Erreur lors de la génération de texte :", error);
         document.getElementById("result").textContent = "Erreur lors de la génération de texte.";
