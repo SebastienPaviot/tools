@@ -15,13 +15,13 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             min-height: 100vh;
         }
 
         h1 {
             color: #333;
-            margin-bottom: 20px;
+            margin: 0;
+            padding-top: 20px;
         }
 
         /* Conteneur pour l'input et le bouton */
@@ -58,7 +58,7 @@
             background-color: #45a049;
         }
 
-        /* Style de la div résultat */
+        /* Style de la div résultat pour 5 lignes de texte */
         #result {
             width: 100%;
             max-width: 600px;
@@ -69,6 +69,8 @@
             box-sizing: border-box;
             font-size: 16px;
             color: #333;
+            height: calc(1.2em * 5); /* Calcul pour 5 lignes, chaque ligne étant de 1.2em */
+            overflow-y: auto; /* Ajout d'un défilement vertical si le contenu dépasse 5 lignes */
         }
     </style>
 </head>
