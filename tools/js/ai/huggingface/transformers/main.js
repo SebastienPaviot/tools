@@ -15,5 +15,16 @@ const messages = [
 ];
 
 // Generate a response
-const output = await generator(messages, { max_new_tokens: 128 });
+var output = await generator(messages, { max_new_tokens: 128 });
 console.log(output[0].generated_text.at(-1).content);
+
+export function transform() {
+    // Récupère la valeur entrée par l'utilisateur
+    const userInput = document.getElementById("userInput").value;
+    
+    var  output = await generator(messages, { max_new_tokens: 128 });
+console.log(output[0].generated_text.at(-1).content);
+
+    // Affiche le message dans la div avec l'ID "result"
+    document.getElementById("result").textContent = output[0].generated_text.at(-1).content;
+}
