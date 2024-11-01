@@ -11,7 +11,7 @@
             background-color: #f0f8ff; /* Bleu clair */
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
+            padding: 20px; /* Ajout de padding pour l'espace autour du contenu */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -22,6 +22,7 @@
             color: #333;
             margin: 0;
             padding-top: 20px;
+            font-size: 2.5em; /* Taille de police plus grande pour le titre */
         }
 
         /* Conteneur pour l'input et le bouton */
@@ -36,22 +37,29 @@
         /* Style de l'input */
         input[type="text"] {
             flex: 1;
-            padding: 10px;
+            padding: 12px; /* Plus de padding pour un meilleur confort */
             font-size: 16px;
             border: 1px solid #ccc;
             border-radius: 5px;
             box-sizing: border-box;
+            transition: border-color 0.3s; /* Animation douce pour le focus */
+        }
+
+        input[type="text"]:focus {
+            border-color: #4CAF50; /* Changer la couleur de la bordure au focus */
+            outline: none; /* Supprimer le contour par défaut */
         }
 
         /* Style du bouton */
         button {
-            padding: 10px 20px;
+            padding: 12px 20px;
             font-size: 16px;
             background-color: #4CAF50; /* Vert */
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s; /* Animation douce pour le hover */
         }
 
         button:hover {
@@ -71,6 +79,8 @@
             color: #333;
             height: calc(1.2em * 5); /* Calcul pour 5 lignes, chaque ligne étant de 1.2em */
             overflow-y: auto; /* Ajout d'un défilement vertical si le contenu dépasse 5 lignes */
+            margin-top: 20px; /* Ajout de marges au-dessus du résultat */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre pour un effet de profondeur */
         }
 
         /* Styles pour la modale */
@@ -88,24 +98,54 @@
             font-size: 24px;
             z-index: 1000; /* Au-dessus des autres éléments */
         }
+
+        /* Style du lien */
+        a {
+            color: #4CAF50; /* Couleur verte pour le lien */
+            text-decoration: none; /* Pas de soulignement */
+            margin-top: 20px; /* Marges autour du lien */
+            font-size: 18px; /* Taille de police pour le lien */
+            padding: 10px 15px; /* Padding pour un meilleur clic */
+            border-radius: 5px; /* Coins arrondis pour le lien */
+            background-color: #fff; /* Fond blanc pour le lien */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre pour le lien */
+            transition: background-color 0.3s; /* Animation douce pour le hover */
+        }
+
+        a:hover {
+            background-color: #e7f7e7; /* Couleur de fond au survol */
+        }
+
+        /* Responsive design */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em; /* Taille de police plus petite sur mobile */
+            }
+
+            button, input[type="text"] {
+                font-size: 14px; /* Réduction de la taille de police sur mobile */
+            }
+
+            #result {
+                font-size: 14px; /* Taille de police réduite pour le résultat */
+            }
+        }
     </style>
 </head>
 <body>
     <h1>Transformers Hugging Face</h1>
     
     <div class="input-container">
-        <input type="text" id="userInput" placeholder="Ask antything" />
+        <input type="text" id="userInput" placeholder="Ask anything" />
         <button onclick="transform()">Submit</button>
     </div>
     
-    <div id="result"></div>
+    <div id="result" aria-live="polite"></div>
 
     <!-- Modale de chargement -->
-    <div id="loadingModal">Loading . can take 3 minutes the first time ...</div>
-    <br/>
-    <br/>
+    <div id="loadingModal">Loading. This can take 3 minutes the first time ...</div>
+    
     <a href="https://medium.com/@paviot.sebastien/exploring-the-potential-of-hugging-face-transformers-a-test-of-text-generation-cfacb9aead90" target="_blank">Explore the article "Exploring the Potential of Hugging Face Transformers: A Test of Text Generation" on Medium</a>
-
 
 </body>
 </html>
