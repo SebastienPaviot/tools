@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cartoonize Image</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial, sans-serif;
+    }
+    canvas {
+      margin-top: 10px;
+      border: 1px solid #ccc;
+    }
+    img {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Cartoonize an Image</h1>
+  <input type="file" id="upload" accept="image/*">
+  <canvas id="canvas"></canvas>
+  <script>
+    const uploadInput = document.getElementById('upload');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    uploadInput.addEventListener('change', function () {
+      const file = uploadInput.files[0];
+      if (file) {
+        const img = new Image();
+        img.src = URL.createObjectURL(file);
+
+        img.onload = () => {
+          // Redimensionner le canvas à la taille de l'image
+          canvas.width = img.width;
+          canvas.height = img.height;
+
+          // Dessiner l'image sur le canvas
+          ctx.drawImage(img, 0, 0, img.width, img.height);
+
+          // Appliquer l'effet cartoon
+          cartoonize();
+        };
+      }
+    });
+
+    function cartoonize() {
+      // Obtenir les pixels de l'image
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imageData.data;
+
+      // Réduction des couleurs (quantification)
+      for (let i = 0; i < data.length; i += 4) {
+        data[i] = Math.floor(data[i] / 64) * 64;     // Rouge
+        data[i + 1] = Math.floor(data[i + 1] / 64) * 64; // Vert
+        data[i + 2] = Math.floor(data[i + 2] / 64) * 64; // Bleu
+      }
+
+      // Détection des contours
+      const grayScale = ctx.createImageData(imageData);
+      for (let i = 0; i < data.length; i += 4) {
+        const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+        grayScale.data[i] = avg;         // Rouge
+        grayScale.data[i + 1] = avg;     // Vert
+        grayScale.data[i + 2] = avg;     // Bleu
+        grayScale.data[i + 3] = data[i + 3]; // Alpha
+      }
+
+      const edgeData = detectEdges(grayScale);
+      mergeImages(imageData, edgeData);
+
+      // Afficher l'image cartoonisée
+      ctx.putImageData(imageData, 0, 0);
+    }
+
+    function detectEdges(imageData) {
+      const data = imageData.data;
+      const width = imageData.width;
+      const height = imageData.height;
+      const edgeData = ctx.createImageData(imageData);
+
+      for (let y = 1; y < height - 1; y++) {
+        for (let x = 1; x < width - 1; x++) {
+          const idx = (y * width + x) * 4;
+
+          const pixelUp = (y - 1) * width + x;
+          const pixelLeft = y * width + (x - 1);
+
+          const diffUp = Math.abs(data[idx] - data[pixelUp * 4]);
+          const diffLeft = Math.abs(data[idx] - data[pixelLeft * 4]);
+
+          const edge = diffUp + diffLeft > 50 ? 0 : 255;
+
+          edgeData.data[idx] = edge; // Rouge
+          edgeData.data[idx + 1] = edge; // Vert
+          edgeData.data[idx + 2] = edge; // Bleu
+          edgeData.data[idx + 3] = 255;  // Alpha
+        }
+      }
+
+      return edgeData;
+    }
+
+    function mergeImages(imageData, edgeData) {
+      const data = imageData.data;
+      const edge = edgeData.data;
+
+      for (let i = 0; i < data.length; i += 4) {
+        data[i] = Math.min(data[i], edge[i]);         // Rouge
+        data[i + 1] = Math.min(data[i + 1], edge[i + 1]); // Vert
+        data[i + 2] = Math.min(data[i + 2], edge[i + 2]); // Bleu
+      }
+    }
+  </script>
+</body>
+</html>
