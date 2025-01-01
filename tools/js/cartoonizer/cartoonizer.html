@@ -87,7 +87,8 @@
         // Charger la DataURL dans un élément <img>
         img.src = imageDataURL;
         console.log("Image capturée :", imageDataURL);
-        document.getElementById('source').src=  imageDataURL;
+        //document.getElementById('source').src=  imageDataURL;
+        predict(img);
 
         // Si vous voulez l'utiliser comme imgElement
         // L'élément <img> peut être utilisé comme imgElement pour un modèle TensorFlow.js
