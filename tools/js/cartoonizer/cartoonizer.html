@@ -68,6 +68,7 @@
 
       // Démarrer la webcam
       try {
+        console.log("chargement camera");
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         video.srcObject = stream;
       } catch (err) {
