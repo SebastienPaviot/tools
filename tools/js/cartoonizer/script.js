@@ -1,3 +1,4 @@
+var predictinuse=false;
 (async () => {
   const APP = {
     model: null,
@@ -69,6 +70,7 @@
   };
 
   async function predict(imgElement) {
+    predictinuse=true;
     console.log("Prédiction en cours...");
     let img = tf.browser.fromPixels(imgElement);
     const shape = img.shape;
@@ -89,6 +91,7 @@
 
     draw(img_out, shape);
     console.log(`Temps de traitement : ${Math.round(timer / 1000 * 10) / 10} secondes`);
+    predictinuse=false;
   }
 
   function normalize(img) {
