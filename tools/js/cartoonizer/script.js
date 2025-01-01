@@ -80,14 +80,32 @@ function scaleCanvas(pct=2) {
 }
 
 document.getElementById('file').addEventListener('change', evt => {
-  evt.target.files.forEach(f => {
-    if (!f.type.match('image.*')) { return }
-    let reader = new FileReader()
-    reader.onload = e => { APP.source.src = e.target.result }
-    reader.readAsDataURL(f)
-  })
-  evt.target.value = null
-})
+  const file = evt.target.files[0]; // Récupère uniquement le premier fichier
+  
+  if (!file || !file.type.match('image.*')) {
+    console.warn('Le fichier sélectionné n\'est pas une image.');
+    evt.target.value = ''; // Réinitialise l'entrée
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      APP.source.src = e.target.result; // Charge l'image dans la source
+      console.log(`Image chargée : ${file.name}`);
+    } catch (error) {
+      console.error(`Erreur lors du chargement de l'image : ${error.message}`);
+    }
+  };
+
+  reader.onerror = () => {
+    console.error(`Erreur de lecture pour le fichier : ${file.name}`);
+  };
+
+  reader.readAsDataURL(file);
+  evt.target.value = ''; // Réinitialise l'entrée pour permettre une nouvelle sélection
+});
+
 
 document.querySelectorAll('#examples img').forEach(
   img => img.addEventListener('click', evt => { APP.source.src = img.src })
