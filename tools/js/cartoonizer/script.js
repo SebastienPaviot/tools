@@ -58,11 +58,7 @@ var predictinuse=false;
   }
 
   APP.source.onload = () => {
-    setTimeout(() => {
-      APP.status.classList.remove('d-none');
-      APP.canvas.classList.add('d-none');
-      APP.canvas.classList.remove('d-block');
-    }, 0);
+   
 
     setTimeout(() => {
       predict(APP.source);
