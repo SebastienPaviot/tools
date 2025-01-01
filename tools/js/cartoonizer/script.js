@@ -111,7 +111,7 @@
     APP.canvas.classList.add('d-block');
     APP.status.classList.add('d-none');
 
-    setTimeout(() => scaleCanvas(scaleby), 50);
+    setTimeout(() => scaleCanvas(scaleby), 250);
   }
 
   function scaleCanvas(pct = 2) {
