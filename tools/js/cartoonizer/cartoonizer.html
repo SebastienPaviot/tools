@@ -60,7 +60,7 @@
   <img id="capturedImage" alt="Captured Image">
   
   <script>
-    //(async () => {
+    (async () => {
       const video = document.getElementById('webcam');
       const canvas = document.getElementById('snapshot');
       const img = document.getElementById('capturedImage');
@@ -96,13 +96,16 @@
         // L'élément <img> peut être utilisé comme imgElement pour un modèle TensorFlow.js
       }
     //  });
-   // })();
 
 
-    setInterval(() => {
+       setInterval(() => {
       console.log("x"+predictinuse);
       capim();
     }, 5000); // 5000 ms = 5 secondes
+   })();
+
+
+   
   </script>
 
  
