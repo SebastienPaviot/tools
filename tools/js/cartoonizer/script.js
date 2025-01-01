@@ -27,7 +27,7 @@ const runModel = async () => {
 }
 
 async function predict(imgElement) {
-  console.log(^predict");
+  console.log("predict");
   let img = tf.browser.fromPixels(imgElement)
   const shape = img.shape
   const [w, h] = shape
