@@ -73,7 +73,7 @@ var predictinuse=false;
     const [w, h] = shape;
 
     // Normalisation de l'image
-   // img = normalize(img);
+    img = normalize(img);
 
     // Début de la prédiction
     const t0 = performance.now();
