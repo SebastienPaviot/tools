@@ -11,6 +11,7 @@ const APP = {
 }
 
 const runModel = async () => {
+  console.log("run model");
   APP.model = await tf.loadGraphModel(APP.path)
   // warm up
   APP.model.predict(tf.zeros([1, 1, 1, 3])).dispose()
@@ -26,6 +27,7 @@ const runModel = async () => {
 }
 
 async function predict(imgElement) {
+  console.log(^predict");
   let img = tf.browser.fromPixels(imgElement)
   const shape = img.shape
   const [w, h] = shape
