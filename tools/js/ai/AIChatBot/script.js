@@ -1,5 +1,6 @@
 document.getElementById("saveApiKeyBtn").addEventListener("click", saveApiKey);
 document.getElementById("sendBtn").addEventListener("click", sendMessage);
+document.getElementById("micBtn").addEventListener("click", startVoiceRecognition);
 document.getElementById("userInput").addEventListener("keypress", function (e) {
     if (e.key === "Enter") sendMessage();
 });
@@ -16,7 +17,6 @@ function saveApiKey() {
     document.getElementById("apiKeyForm").style.display = "none";
     document.getElementById("chatContainer").classList.remove("hidden");
 
-    // Force le chat à scroller vers le bas dès l'affichage
     scrollToBottom();
 }
 
@@ -74,13 +74,44 @@ function scrollToBottom() {
     }, 100);
 }
 
+// 🎤 Fonction pour la reconnaissance vocale
+function startVoiceRecognition() {
+    if (!("webkitSpeechRecognition" in window)) {
+        alert("La reconnaissance vocale n'est pas supportée par votre navigateur.");
+        return;
+    }
+
+    const recognition = new webkitSpeechRecognition();
+    recognition.lang = "fr-FR";
+    recognition.interimResults = false;
+    recognition.continuous = false;
+
+    recognition.onstart = function () {
+        document.getElementById("micBtn").classList.add("bg-red-700");
+    };
+
+    recognition.onresult = function (event) {
+        const transcript = event.results[0][0].transcript;
+        document.getElementById("userInput").value = transcript;
+    };
+
+    recognition.onerror = function (event) {
+        console.error("Erreur de reconnaissance vocale :", event.error);
+    };
+
+    recognition.onend = function () {
+        document.getElementById("micBtn").classList.remove("bg-red-700");
+    };
+
+    recognition.start();
+}
+
 // Vérifie si la clé API est déjà enregistrée
 window.onload = function () {
     if (sessionStorage.getItem("openai_api_key")) {
         document.getElementById("apiKeyForm").style.display = "none";
         document.getElementById("chatContainer").classList.remove("hidden");
 
-        // Forcer le chat à démarrer en bas
         scrollToBottom();
     }
 };
