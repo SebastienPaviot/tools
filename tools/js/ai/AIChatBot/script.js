@@ -27,7 +27,7 @@ async function sendMessage() {
     const userInput = document.getElementById("userInput").value.trim();
     if (!userInput) return;
 
-    addMessage("Vous", userInput, "bg-blue-500 text-white self-end text-right");
+    addMessage("Vous", userInput, "user");
 
     document.getElementById("userInput").value = "";
 
@@ -48,31 +48,23 @@ async function sendMessage() {
         const data = await response.json();
         const botMessage = data.choices?.[0]?.message?.content || "Je n'ai pas compris.";
 
-        addMessage("Bot", botMessage, "bg-gray-300 text-black self-start text-left");
+        addMessage("Bot", botMessage, "bot");
+
         speak(botMessage);
     } catch (error) {
         console.error(error);
-        addMessage("Bot", "Erreur lors de la communication avec l'API.", "bg-red-500 text-white");
+        addMessage("Bot", "Erreur lors de la communication avec l'API.", "bot");
     }
 }
 
-function addMessage(sender, text, classes) {
+function addMessage(sender, text, type) {
     const chatbox = document.getElementById("chatbox");
+
     const messageElement = document.createElement("div");
-    messageElement.classList = `p-3 rounded-lg max-w-xs ${classes}`;
+    messageElement.classList.add("message", type);
     messageElement.innerHTML = `<strong>${sender}:</strong> ${text}`;
 
-    const wrapper = document.createElement("div");
-    wrapper.classList = "flex w-full mb-2";
-    wrapper.appendChild(messageElement);
-
-    if (classes.includes("self-end")) {
-        wrapper.classList.add("justify-end");
-    } else {
-        wrapper.classList.add("justify-start");
-    }
-
-    chatbox.appendChild(wrapper);
+    chatbox.appendChild(messageElement);
     scrollToBottom();
 }
 
@@ -83,7 +75,6 @@ function scrollToBottom() {
     }, 100);
 }
 
-// 🎤 Reconnaissance vocale avec envoi automatique du message
 function startVoiceRecognition() {
     if (!("webkitSpeechRecognition" in window)) {
         alert("La reconnaissance vocale n'est pas supportée par votre navigateur.");
@@ -96,7 +87,7 @@ function startVoiceRecognition() {
     recognition.continuous = false;
 
     recognition.onstart = function () {
-        document.getElementById("micBtn").classList.add("bg-red-700");
+        document.getElementById("micBtn").classList.add("active");
     };
 
     recognition.onresult = function (event) {
@@ -104,36 +95,19 @@ function startVoiceRecognition() {
         document.getElementById("userInput").value = transcript;
     };
 
-    recognition.onerror = function (event) {
-        console.error("Erreur de reconnaissance vocale :", event.error);
-    };
-
     recognition.onend = function () {
-        document.getElementById("micBtn").classList.remove("bg-red-700");
-
-        // ⏩ Envoi automatique du message dès que l'utilisateur finit de parler
+        document.getElementById("micBtn").classList.remove("active");
         sendMessage();
     };
 
     recognition.start();
 }
 
-// 🔊 Lecture des messages avec une voix française
 function speak(text) {
-    if (!window.speechSynthesis) {
-        console.warn("Synthèse vocale non supportée par ce navigateur.");
-        return;
-    }
+    if (!window.speechSynthesis) return;
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = "fr-FR";
-
-    const voices = speechSynthesis.getVoices();
-    const frenchVoice = voices.find(voice => voice.lang.startsWith("fr"));
-    if (frenchVoice) {
-        utterance.voice = frenchVoice;
-    }
-
     speechSynthesis.speak(utterance);
 }
 
