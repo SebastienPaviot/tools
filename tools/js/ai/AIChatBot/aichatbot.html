@@ -3,40 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot AI</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/3.3.0/tailwind.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Chatbot OpenAI</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gray-100 h-screen flex flex-col justify-between">
-
-    <!-- Formulaire de saisie de la clé API -->
-    <div id="apiKeyForm" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-        <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-            <h2 class="text-lg font-semibold mb-4">Entrez votre clé API OpenAI</h2>
-            <input id="apiKeyInput" type="text" placeholder="Votre clé API..." 
-                   class="border p-2 rounded w-full">
-            <button id="saveApiKeyBtn" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded">
-                Enregistrer
-            </button>
+<body>
+    <div id="apiKeyForm" class="overlay">
+        <div class="api-box">
+            <h2>Entrez votre clé API OpenAI</h2>
+            <input type="password" id="apiKeyInput" placeholder="Clé API">
+            <button id="saveApiKeyBtn">Valider</button>
         </div>
     </div>
 
-    <!-- Chatbot -->
-    <div id="chatContainer" class="hidden max-w-2xl w-full mx-auto flex flex-col flex-grow h-screen">
-        <div class="bg-blue-600 text-white p-4 text-center text-lg font-semibold">
-            Chatbot AI
-        </div>
-
-        <!-- Boîte de chat -->
-        <div id="chatbox" class="flex-grow p-4 overflow-y-auto bg-white"></div>
-
-        <!-- Zone d'entrée avec bouton micro -->
-        <div class="p-4 bg-gray-200 flex items-center w-full">
-            <button id="micBtn" class="mr-2 p-2 bg-red-500 text-white rounded-full">
-                🎤
-            </button>
-            <input id="userInput" type="text" class="flex-grow p-2 border rounded-lg" placeholder="Posez une question...">
-            <button id="sendBtn" class="ml-2 px-4 py-2 bg-blue-600 text-white rounded-lg">Envoyer</button>
+    <div id="chatContainer" class="chat-container hidden">
+        <div id="chatbox" class="chatbox"></div>
+        <div class="input-container">
+            <button id="micBtn">🎤</button>
+            <input type="text" id="userInput" placeholder="Écrivez un message...">
+            <button id="sendBtn">➤</button>
         </div>
     </div>
 
