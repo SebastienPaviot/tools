@@ -13,7 +13,6 @@ function saveApiKey() {
     }
     sessionStorage.setItem("openai_api_key", apiKey);
 
-    // Cache immédiatement le formulaire et affiche le chatbot
     document.getElementById("apiKeyForm").style.display = "none";
     document.getElementById("chatContainer").classList.remove("hidden");
 
@@ -30,7 +29,7 @@ async function sendMessage() {
     const userInput = document.getElementById("userInput").value.trim();
     if (!userInput) return;
 
-    addMessage("Vous", userInput, "bg-gray-300 text-black text-right");
+    addMessage("Vous", userInput, "bg-blue-500 text-white self-end text-right");
 
     document.getElementById("userInput").value = "";
 
@@ -51,11 +50,9 @@ async function sendMessage() {
         const data = await response.json();
         const botMessage = data.choices?.[0]?.message?.content || "Je n'ai pas compris.";
 
-        addMessage("Bot", botMessage, "bg-blue-500 text-white text-left");
+        addMessage("Bot", botMessage, "bg-gray-300 text-black self-start text-left");
 
-        // Lancer la lecture vocale 📢
         speak(botMessage);
-
     } catch (error) {
         console.error(error);
         addMessage("Bot", "Erreur lors de la communication avec l'API.", "bg-red-500 text-white");
@@ -65,10 +62,21 @@ async function sendMessage() {
 function addMessage(sender, text, classes) {
     const chatbox = document.getElementById("chatbox");
     const messageElement = document.createElement("div");
-    messageElement.classList = `p-3 rounded-lg w-fit max-w-xs ${classes}`;
+
+    messageElement.classList = `p-3 rounded-lg max-w-xs ${classes}`;
     messageElement.innerHTML = `<strong>${sender}:</strong> ${text}`;
-    
-    chatbox.appendChild(messageElement);
+
+    const wrapper = document.createElement("div");
+    wrapper.classList = "flex w-full mb-2";
+    wrapper.appendChild(messageElement);
+
+    if (classes.includes("self-end")) {
+        wrapper.classList.add("justify-end");
+    } else {
+        wrapper.classList.add("justify-start");
+    }
+
+    chatbox.appendChild(wrapper);
     scrollToBottom();
 }
 
@@ -79,7 +87,6 @@ function scrollToBottom() {
     }, 100);
 }
 
-// 🎤 Fonction pour la reconnaissance vocale
 function startVoiceRecognition() {
     if (!("webkitSpeechRecognition" in window)) {
         alert("La reconnaissance vocale n'est pas supportée par votre navigateur.");
@@ -111,7 +118,6 @@ function startVoiceRecognition() {
     recognition.start();
 }
 
-// 🔊 Fonction de synthèse vocale en français
 function speak(text) {
     if (!window.speechSynthesis) {
         console.warn("Synthèse vocale non supportée par ce navigateur.");
@@ -121,7 +127,6 @@ function speak(text) {
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = "fr-FR";
 
-    // Sélectionner une voix française si disponible
     const voices = speechSynthesis.getVoices();
     const frenchVoice = voices.find(voice => voice.lang.startsWith("fr"));
     if (frenchVoice) {
@@ -131,7 +136,6 @@ function speak(text) {
     speechSynthesis.speak(utterance);
 }
 
-// Vérifie si la clé API est déjà enregistrée
 window.onload = function () {
     if (sessionStorage.getItem("openai_api_key")) {
         document.getElementById("apiKeyForm").style.display = "none";
