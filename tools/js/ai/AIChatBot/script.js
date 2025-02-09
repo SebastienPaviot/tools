@@ -15,6 +15,9 @@ function saveApiKey() {
     // Cache immédiatement le formulaire et affiche le chatbot
     document.getElementById("apiKeyForm").style.display = "none";
     document.getElementById("chatContainer").classList.remove("hidden");
+
+    // Force le chat à scroller vers le bas dès l'affichage
+    scrollToBottom();
 }
 
 async function sendMessage() {
@@ -61,7 +64,14 @@ function addMessage(sender, text, classes) {
     messageElement.innerHTML = `<strong>${sender}:</strong> ${text}`;
     
     chatbox.appendChild(messageElement);
-    chatbox.scrollTop = chatbox.scrollHeight;
+    scrollToBottom();
+}
+
+function scrollToBottom() {
+    const chatbox = document.getElementById("chatbox");
+    setTimeout(() => {
+        chatbox.scrollTop = chatbox.scrollHeight;
+    }, 100);
 }
 
 // Vérifie si la clé API est déjà enregistrée
@@ -69,5 +79,8 @@ window.onload = function () {
     if (sessionStorage.getItem("openai_api_key")) {
         document.getElementById("apiKeyForm").style.display = "none";
         document.getElementById("chatContainer").classList.remove("hidden");
+
+        // Forcer le chat à démarrer en bas
+        scrollToBottom();
     }
 };
