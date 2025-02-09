@@ -6,7 +6,7 @@
     <title>Chatbot AI</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/3.3.0/tailwind.min.css">
 </head>
-<body class="bg-gray-100 h-screen flex flex-col">
+<body class="bg-gray-100 h-screen flex flex-col justify-between">
 
     <!-- Formulaire de saisie de la clé API -->
     <div id="apiKeyForm" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
@@ -21,12 +21,16 @@
     </div>
 
     <!-- Chatbot -->
-    <div id="chatContainer" class="hidden max-w-2xl w-full mx-auto flex flex-col flex-grow">
+    <div id="chatContainer" class="hidden max-w-2xl w-full mx-auto flex flex-col flex-grow h-screen">
         <div class="bg-blue-600 text-white p-4 text-center text-lg font-semibold">
             Chatbot AI
         </div>
-        <div id="chatbox" class="flex-grow p-4 overflow-y-auto space-y-4 bg-white"></div>
-        <div class="p-4 bg-gray-200 flex sticky bottom-0 w-full">
+
+        <!-- Boîte de chat qui grandit et scrolle automatiquement -->
+        <div id="chatbox" class="flex-grow p-4 overflow-y-auto bg-white"></div>
+
+        <!-- Input toujours en bas -->
+        <div class="p-4 bg-gray-200 flex w-full">
             <input id="userInput" type="text" class="flex-grow p-2 border rounded-lg" placeholder="Posez une question...">
             <button id="sendBtn" class="ml-2 px-4 py-2 bg-blue-600 text-white rounded-lg">Envoyer</button>
         </div>
