@@ -9,6 +9,7 @@
 body {
     font-family: Arial, sans-serif;
     height: 100vh;
+    background: #007bff;
     display: flex;
     flex-direction: column;
     overflow: hidden; /* Empêche la scrollbar */
@@ -19,7 +20,6 @@ body {
     background: #007bff;
     color: white;
     text-align: center;
-    padding: 15px;
     font-size: 24px;
     font-weight: bold;
     width: 100%;
