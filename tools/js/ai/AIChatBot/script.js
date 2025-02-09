@@ -12,10 +12,8 @@ function saveApiKey() {
         return;
     }
     sessionStorage.setItem("openai_api_key", apiKey);
-
     document.getElementById("apiKeyForm").style.display = "none";
     document.getElementById("chatContainer").classList.remove("hidden");
-
     scrollToBottom();
 }
 
@@ -51,7 +49,6 @@ async function sendMessage() {
         const botMessage = data.choices?.[0]?.message?.content || "Je n'ai pas compris.";
 
         addMessage("Bot", botMessage, "bg-gray-300 text-black self-start text-left");
-
         speak(botMessage);
     } catch (error) {
         console.error(error);
@@ -62,7 +59,6 @@ async function sendMessage() {
 function addMessage(sender, text, classes) {
     const chatbox = document.getElementById("chatbox");
     const messageElement = document.createElement("div");
-
     messageElement.classList = `p-3 rounded-lg max-w-xs ${classes}`;
     messageElement.innerHTML = `<strong>${sender}:</strong> ${text}`;
 
@@ -87,6 +83,7 @@ function scrollToBottom() {
     }, 100);
 }
 
+// 🎤 Reconnaissance vocale avec envoi automatique du message
 function startVoiceRecognition() {
     if (!("webkitSpeechRecognition" in window)) {
         alert("La reconnaissance vocale n'est pas supportée par votre navigateur.");
@@ -113,11 +110,15 @@ function startVoiceRecognition() {
 
     recognition.onend = function () {
         document.getElementById("micBtn").classList.remove("bg-red-700");
+
+        // ⏩ Envoi automatique du message dès que l'utilisateur finit de parler
+        sendMessage();
     };
 
     recognition.start();
 }
 
+// 🔊 Lecture des messages avec une voix française
 function speak(text) {
     if (!window.speechSynthesis) {
         console.warn("Synthèse vocale non supportée par ce navigateur.");
@@ -140,7 +141,6 @@ window.onload = function () {
     if (sessionStorage.getItem("openai_api_key")) {
         document.getElementById("apiKeyForm").style.display = "none";
         document.getElementById("chatContainer").classList.remove("hidden");
-
         scrollToBottom();
     }
 };
