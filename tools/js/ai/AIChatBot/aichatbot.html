@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/3.3.0/tailwind.min.css">
+</head>
+<body class="bg-gray-100 flex flex-col h-screen">
+
+    <!-- Formulaire de saisie de la clé API -->
+    <div id="apiKeyForm" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+            <h2 class="text-lg font-semibold mb-4">Entrez votre clé API OpenAI</h2>
+            <input id="apiKeyInput" type="text" placeholder="Votre clé API..." 
+                   class="border p-2 rounded w-full">
+            <button id="saveApiKeyBtn" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded">
+                Enregistrer
+            </button>
+        </div>
+    </div>
+
+    <!-- Chatbot -->
+    <div id="chatContainer" class="hidden max-w-2xl w-full mx-auto flex flex-col flex-grow">
+        <div class="bg-blue-600 text-white p-4 text-center text-lg font-semibold">
+            Chatbot AI
+        </div>
+        <div id="chatbox" class="flex-grow p-4 overflow-y-auto space-y-4 bg-white"></div>
+        <div class="p-4 bg-gray-200 flex">
+            <input id="userInput" type="text" class="flex-grow p-2 border rounded-lg" placeholder="Posez une question...">
+            <button id="sendBtn" class="ml-2 px-4 py-2 bg-blue-600 text-white rounded-lg">Envoyer</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
