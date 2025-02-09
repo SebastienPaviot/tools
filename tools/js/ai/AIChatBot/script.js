@@ -11,7 +11,9 @@ function saveApiKey() {
         return;
     }
     sessionStorage.setItem("openai_api_key", apiKey);
-    document.getElementById("apiKeyForm").classList.add("hidden");
+
+    // Cache immédiatement le formulaire et affiche le chatbot
+    document.getElementById("apiKeyForm").style.display = "none";
     document.getElementById("chatContainer").classList.remove("hidden");
 }
 
@@ -65,7 +67,7 @@ function addMessage(sender, text, classes) {
 // Vérifie si la clé API est déjà enregistrée
 window.onload = function () {
     if (sessionStorage.getItem("openai_api_key")) {
-        document.getElementById("apiKeyForm").classList.add("hidden");
+        document.getElementById("apiKeyForm").style.display = "none";
         document.getElementById("chatContainer").classList.remove("hidden");
     }
 };
