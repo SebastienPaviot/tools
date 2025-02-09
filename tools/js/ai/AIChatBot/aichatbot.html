@@ -26,11 +26,14 @@
             Chatbot AI
         </div>
 
-        <!-- Boîte de chat qui grandit et scrolle automatiquement -->
+        <!-- Boîte de chat -->
         <div id="chatbox" class="flex-grow p-4 overflow-y-auto bg-white"></div>
 
-        <!-- Input toujours en bas -->
-        <div class="p-4 bg-gray-200 flex w-full">
+        <!-- Zone d'entrée avec bouton micro -->
+        <div class="p-4 bg-gray-200 flex items-center w-full">
+            <button id="micBtn" class="mr-2 p-2 bg-red-500 text-white rounded-full">
+                🎤
+            </button>
             <input id="userInput" type="text" class="flex-grow p-2 border rounded-lg" placeholder="Posez une question...">
             <button id="sendBtn" class="ml-2 px-4 py-2 bg-blue-600 text-white rounded-lg">Envoyer</button>
         </div>
