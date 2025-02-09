@@ -30,7 +30,7 @@ async function sendMessage() {
     const userInput = document.getElementById("userInput").value.trim();
     if (!userInput) return;
 
-    addMessage("Vous", userInput, "bg-gray-300 text-black");
+    addMessage("Vous", userInput, "bg-gray-300 text-black text-right");
 
     document.getElementById("userInput").value = "";
 
@@ -50,7 +50,12 @@ async function sendMessage() {
 
         const data = await response.json();
         const botMessage = data.choices?.[0]?.message?.content || "Je n'ai pas compris.";
-        addMessage("Bot", botMessage, "bg-blue-500 text-white");
+
+        addMessage("Bot", botMessage, "bg-blue-500 text-white text-left");
+
+        // Lancer la lecture vocale 📢
+        speak(botMessage);
+
     } catch (error) {
         console.error(error);
         addMessage("Bot", "Erreur lors de la communication avec l'API.", "bg-red-500 text-white");
@@ -104,6 +109,26 @@ function startVoiceRecognition() {
     };
 
     recognition.start();
+}
+
+// 🔊 Fonction de synthèse vocale en français
+function speak(text) {
+    if (!window.speechSynthesis) {
+        console.warn("Synthèse vocale non supportée par ce navigateur.");
+        return;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "fr-FR";
+
+    // Sélectionner une voix française si disponible
+    const voices = speechSynthesis.getVoices();
+    const frenchVoice = voices.find(voice => voice.lang.startsWith("fr"));
+    if (frenchVoice) {
+        utterance.voice = frenchVoice;
+    }
+
+    speechSynthesis.speak(utterance);
 }
 
 // Vérifie si la clé API est déjà enregistrée
