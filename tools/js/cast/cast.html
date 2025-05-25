@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cast vers TV</title>
+  <script type="text/javascript" src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
+</head>
+<body>
+  <button onclick="castScreen()">Caster sur TV</button>
+  <video id="video" src="https://www.w3schools.com/html/mov_bbb.mp4" controls autoplay></video>
+
+  <script>
+    let session = null;
+
+    window['__onGCastApiAvailable'] = function(isAvailable) {
+      if (isAvailable) {
+        cast.framework.CastContext.getInstance().setOptions({
+          receiverApplicationId: chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID,
+          autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
+        });
+      }
+    };
+
+    function castScreen() {
+      const context = cast.framework.CastContext.getInstance();
+      const sessionRequest = context.requestSession();
+      sessionRequest.then(() => {
+        const mediaInfo = new chrome.cast.media.MediaInfo(
+          "https://www.w3schools.com/html/mov_bbb.mp4",
+          'video/mp4'
+        );
+
+        const request = new chrome.cast.media.LoadRequest(mediaInfo);
+        context.getCurrentSession().loadMedia(request).then(() => {
+          console.log("Vidéo castée !");
+        });
+      });
+    }
+  </script>
+</body>
+</html>
